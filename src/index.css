@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-*: initial;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-black: #000;
+  --color-white: #fff;
+
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+  --color-gray-950: #030712;
+
+  --color-orange: #e29f28;
+
+  --color-red: #d54418;
+
+  --color-orange_2-200: #f6e3cf;
+  --color-orange_2-500: #e18521;
+  --color-orange_2: #f89223;
+
+  --color-green-200: #9ccf77;
+  --color-green: #6fb43f;
+
+  --color-goldgray: #f4f3f0;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 767px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1200px;
+
+  --font-space:
+    Space Grotesk, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-inter:
+    inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-barlow:
+    barlow, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --animate-marquee-left: marquee-left var(--duration, 40s) linear infinite;
+  --animate-marquee-up: marquee-up var(--duration, 40s) linear infinite;
+
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-up {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(calc(-100% - var(--gap)));
+    }
+  }
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+/*@layer base {*/
+/*  *,*/
+/*  ::after,*/
+/*  ::before,*/
+/*  ::backdrop,*/
+/*  ::file-selector-button {*/
+/*    border-color: var(--color-gray-200, currentcolor);*/
+/*  }*/
+/*}*/

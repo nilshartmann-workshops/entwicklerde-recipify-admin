@@ -1,0 +1,8 @@
+pnpm-lock.yaml
+_generated*
+public/**/*.css
+public/favicons/**
+*.md
+public/mockServiceWorker.js
+
+src/routeTree.gen.ts
