@@ -1,0 +1,1 @@
+{"required":["comment","commenter","createdAt","rating"],"type":"object","properties":{"id":{"type":"integer","format":"int64"},"createdAt":{"type":"string","format":"date-time"},"commenter":{"type":"string"},"rating":{"type":"integer","format":"int32"},"comment":{"type":"string"}},"x-readme-ref-name":"Feedback"}

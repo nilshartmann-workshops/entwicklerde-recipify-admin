@@ -1,0 +1,1 @@
+{"required":["id","mealType","title"],"type":"object","properties":{"id":{"type":"string"},"title":{"type":"string"},"mealType":{"type":"string"}},"x-readme-ref-name":"ExploreRecipeDto"}

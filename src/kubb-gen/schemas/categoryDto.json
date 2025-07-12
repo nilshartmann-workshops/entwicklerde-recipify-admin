@@ -1,0 +1,1 @@
+{"required":["description","icon","id","title","type"],"type":"object","properties":{"id":{"type":"string"},"type":{"type":"string"},"title":{"type":"string"},"description":{"type":"string"},"icon":{"type":"string"}},"x-readme-ref-name":"CategoryDto"}
