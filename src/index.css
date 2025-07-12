@@ -106,7 +106,7 @@
 }
 
 .RecipeForm .ButtonBar button {
-  @apply border-green bg-green me-2 flex inline-block w-fit cursor-pointer rounded border px-4 py-2 text-2xl text-white hover:border-[#4B792A] hover:bg-[#4B792A];
+  @apply border-green bg-green me-2 flex w-fit cursor-pointer rounded border px-4 py-2 text-2xl text-white hover:border-[#4B792A] hover:bg-[#4B792A];
 }
 
 .RecipeForm .ButtonBar button:disabled {
@@ -157,6 +157,10 @@
 
 .RecipeForm .Instructions li {
   @apply mb-8 flex items-center space-x-8;
+}
+
+.RecipeForm .Instructions li.dragging {
+  @apply scale-105 rounded-xl bg-gray-100 p-8 shadow-xl;
 }
 
 .RecipeForm .Instructions .Step {

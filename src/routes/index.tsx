@@ -1,3 +1,9 @@
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  type DropResult,
+} from "@hello-pangea/dnd";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
@@ -108,6 +114,12 @@ function RouteComponent() {
     name: "instructions",
   });
 
+  const onInstructionsDragEnd = (result: DropResult) => {
+    console.log("END", result);
+    if (!result.destination) return;
+    instructions.move(result.source.index, result.destination.index);
+  };
+
   return (
     <form
       className={"RecipeForm"}
@@ -216,36 +228,65 @@ function RouteComponent() {
 
       <section className={"Instructions"}>
         <h2>Instructions</h2>
-        <ul>
-          {instructions.fields.map((field, index) => {
-            return (
-              <li key={field.id}>
-                <div className={"Step"}>Step {index + 1}</div>
-                <input {...form.register(`instructions.${index}.value`)} />
-                <button
-                  type={"button"}
-                  className={"secondary"}
-                  onClick={() => instructions.remove(index)}
-                >
-                  <i className="fa-regular fa-circle-xmark"></i>
-                  <span>Remove</span>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-        <button
-          type={"button"}
-          className={"primary"}
-          onClick={() => {
-            instructions.append({
-              value: "",
-            });
-          }}
-        >
-          <i className={"fa fa-circle-plus"} />
-          <span>Add</span>
-        </button>
+        <DragDropContext onDragEnd={onInstructionsDragEnd}>
+          <Droppable droppableId="instructions">
+            {(provided) => (
+              <ul ref={provided.innerRef} {...provided.droppableProps}>
+                {instructions.fields.map((field, index) => {
+                  return (
+                    <Draggable
+                      key={field.id}
+                      draggableId={field.id}
+                      index={index}
+                    >
+                      {(provided, snapshot) => (
+                        <li
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          className={
+                            snapshot.isDragging ? "dragging" : undefined
+                          }
+                        >
+                          <div
+                            {...provided.dragHandleProps}
+                            className="cursor-move px-2 text-xl"
+                          >
+                            ☰
+                          </div>
+                          <div className={"Step"}>Step {index + 1}</div>
+                          <input
+                            {...form.register(`instructions.${index}.value`)}
+                          />
+                          <button
+                            type={"button"}
+                            className={"secondary"}
+                            onClick={() => instructions.remove(index)}
+                          >
+                            <i className="fa-regular fa-circle-xmark"></i>
+                            <span>Remove</span>
+                          </button>
+                        </li>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </ul>
+            )}
+          </Droppable>
+          <button
+            type={"button"}
+            className={"primary"}
+            onClick={() => {
+              instructions.append({
+                value: "",
+              });
+            }}
+          >
+            <i className={"fa fa-circle-plus"} />
+            <span>Add</span>
+          </button>
+        </DragDropContext>
       </section>
       <div className={"ButtonBar"}>
         <button>Save</button>
