@@ -9,6 +9,7 @@ export const ExploreRecipeDto = z.object({
   id: z.string(),
   title: z.string(),
   mealType: z.string(),
+  image: z.string(),
 })
 
 export type ExploreRecipeDto = z.infer<typeof ExploreRecipeDto>

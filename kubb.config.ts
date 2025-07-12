@@ -46,7 +46,7 @@ export default defineConfig(async () => {
           barrelType: "propagate",
         },
         unknownType: "unknown",
-        dateType: "stringOffset",
+        dateType: "stringLocal",
         version: "4",
         transformers: {
           name: (n) => {

@@ -171,8 +171,27 @@
   @apply ms-[6.7rem] -mt-6;
 }
 
-.RecipeForm .Ingredients li .Buttons {
+.RecipeForm .Buttons {
   @apply flex items-center gap-x-4;
+}
+
+.ImageCropperField {
+  @apply flex flex-col gap-y-4;
+}
+
+.ImageCropperField .CropContainer {
+  @apply relative h-77 w-full rounded-lg bg-gray-200;
+}
+.ImageCropperField .reactEasyCrop_CropArea {
+  @apply rounded-lg border-0 shadow-none;
+}
+
+.ImageCropperField .Preview {
+  @apply flex flex-col gap-y-4;
+}
+
+.ImageCropperField .Preview img {
+  @apply rounded-lg;
 }
 
 .RecipeForm button[type="button"].primary,
@@ -183,6 +202,14 @@
 .RecipeForm button[type="button"].secondary,
 .RecipeForm button[type="button"].secondary {
   @apply flex h-fit cursor-pointer items-center gap-x-2 rounded bg-gray-200 px-2 py-1 hover:bg-gray-400;
+}
+
+.RecipeForm .Feedback .success {
+  @apply border-green bg-green/80 rounded-lg border-2 p-2 text-white;
+}
+
+.RecipeForm .Feedback .error {
+  @apply border-red bg-red/80 rounded-lg border-2 p-2 text-white;
 }
 
 .CategorySelector {

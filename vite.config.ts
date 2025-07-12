@@ -1,3 +1,5 @@
+/// <reference types="vitest/config" />
+
 import tailwindcss from "@tailwindcss/vite";
 import tanstackRouter from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
@@ -8,13 +10,24 @@ export default defineConfig({
   plugins: [tanstackRouter(), tailwindcss(), react()],
   server: {
     proxy: {
+      "/api": {
+        target: "http://localhost:8080",
+        changeOrigin: true,
+      },
       "/images": {
         target: "http://localhost:8080",
         changeOrigin: true,
-        // Optional: Pfad muss nicht umgeschrieben werden, da "/images" erhalten bleibt
-        // Falls du z.B. "/backend/images" im Ziel brauchst:
-        // rewrite: path => path.replace(/^\/images/, '/backend/images')
       },
     },
+  },
+  test: {
+    projects: [
+      {
+        test: {
+          name: "unit",
+          include: ["src/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
+        },
+      },
+    ],
   },
 });

@@ -5,45 +5,37 @@ import {
   type DropResult,
 } from "@hello-pangea/dnd";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useSuspenseQueries } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import ky from "ky";
 import { useState } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod/v4";
 
-import { CategoryDto, MealTypeDto } from "../kubb-gen";
+import { fileToBase64 } from "../components/file-utils.ts";
+import { ImageCropperField } from "../components/ImageCropperField.tsx";
+import {
+  CategoryDto,
+  type CreateRecipeMutationRequest,
+  CreateRecipeMutationResponse,
+  MealTypeDto,
+} from "../kubb-gen";
 
 export const Route = createFileRoute("/")({
   component: RouteComponent,
 });
 
-/*
-
-              id: z.string(),
-              createdAt: z.string(),
-              userFullname: z.string(), <-- eventuell später
-
-  title: z.string(),
-  headline: z.string(),
-  preparationTime: z.number(),
-  cookTime: z.number(),
-  categories: z.array(CategoryDto),
-  mealType: z.string(),
-              averageRating: z.number(),
-              likes: z.number(),
-  instructions: z.array(Instruction),
-  ingredients: z.array(Ingredient),
-
- */
-
 const RecipeFormSchema = z.object({
-  mealType: z.string().nonempty(),
+  mealTypeId: z.string().nonempty(),
   title: z.string().nonempty(),
-  // headline: z.string().nonempty(),
-  // preparationTime: z.number().min(0),
-  // cookTime: z.number().min(0),
-  // categories: z.string().array(),
+  image: z
+    .instanceof(File)
+    .refine((f) => f.size > 0, "Bitte ein Bild zuschneiden und übernehmen"),
+
+  headline: z.string().nonempty(),
+  preparationTime: z.coerce.number().min(0),
+  cookTime: z.coerce.number().min(0),
+  categoryIds: z.string().array().min(1),
   instructions: z
     .object({
       value: z.string().nonempty(),
@@ -66,33 +58,63 @@ const RecipeFormSchema = z.object({
     .array(),
 });
 
+type RecipeFormState = z.infer<typeof RecipeFormSchema>;
+
 function RouteComponent() {
-  const { data: categories } = useSuspenseQuery({
-    queryKey: ["admin", "categories"],
-    async queryFn() {
-      const response = await ky
-        .get("http://localhost:8080/api/admin/categories")
-        .json();
-      return CategoryDto.array().parse(response);
-    },
+  // const { data: categories } = useSuspenseQuery({
+  //   queryKey: ["admin", "categories"],
+  //   async queryFn() {
+  //     const response = await ky
+  //       .get("http://localhost:8080/api/admin/categories")
+  //       .json();
+  //     return CategoryDto.array().parse(response);
+  //   },
+  // });
+  //
+  // const { data: mealtypes } = useSuspenseQuery({
+  //   queryKey: ["admin", "mealtypes"],
+  //   async queryFn() {
+  //     const response = await ky
+  //       .get("http://localhost:8080/api/admin/meal-types")
+  //       .json();
+  //     return MealTypeDto.array().parse(response);
+  //   },
+  // });
+
+  const [{ data: mealtypes }, { data: categories }] = useSuspenseQueries({
+    queries: [
+      {
+        queryKey: ["admin", "mealtypes"],
+        async queryFn() {
+          const response = await ky.get("/api/admin/meal-types").json();
+          return MealTypeDto.array().parse(response);
+        },
+      },
+      {
+        queryKey: ["admin", "categories"],
+        async queryFn() {
+          const response = await ky.get("/api/admin/categories").json();
+          return CategoryDto.array().parse(response);
+        },
+      },
+    ],
   });
 
-  const { data: mealtypes } = useSuspenseQuery({
-    queryKey: ["admin", "mealtypes"],
-    async queryFn() {
+  const mutation = useMutation({
+    async mutationFn(data: CreateRecipeMutationRequest) {
       const response = await ky
-        .get("http://localhost:8080/api/admin/meal-types")
+        .post("/api/admin/recipe", {
+          json: data,
+        })
         .json();
-      return MealTypeDto.array().parse(response);
+      return CreateRecipeMutationResponse.parse(response);
     },
   });
-
-  console.log("CATEGORIES", categories);
-  console.log("MEAL TYPES", mealtypes);
 
   const form = useForm({
     resolver: zodResolver(RecipeFormSchema),
     defaultValues: {
+      categoryIds: [],
       ingredients: [
         {
           amount: 0,
@@ -115,18 +137,31 @@ function RouteComponent() {
   });
 
   const onInstructionsDragEnd = (result: DropResult) => {
-    console.log("END", result);
-    if (!result.destination) return;
-    instructions.move(result.source.index, result.destination.index);
+    if (result.reason === "DROP" && result.destination) {
+      instructions.move(result.source.index, result.destination.index);
+    }
+  };
+
+  const handleSubmit = async (data: RecipeFormState) => {
+    console.log("SAVE - data", data);
+
+    const fileBase64 = await fileToBase64(data.image);
+
+    mutation.mutate({
+      ...data,
+      image: fileBase64,
+      instructions: data.instructions.map((i) => i.value),
+    });
+  };
+
+  const handleSubmitError = (err: any) => {
+    console.log("ERROR - err", err);
   };
 
   return (
     <form
       className={"RecipeForm"}
-      onSubmit={form.handleSubmit(
-        (d) => console.log("DATA", d),
-        (e) => console.log("ERROR", e),
-      )}
+      onSubmit={form.handleSubmit(handleSubmit, handleSubmitError)}
     >
       <section>
         <h2>Recipe</h2>
@@ -134,7 +169,7 @@ function RouteComponent() {
           <section className={"w-1/2"}>
             <div className={"FormRow"}>
               <label>Meal Type</label>
-              <select>
+              <select {...form.register("mealTypeId")}>
                 <option key={""}></option>
                 {mealtypes.map((mt) => (
                   <option key={mt.id} value={mt.id}>
@@ -145,33 +180,50 @@ function RouteComponent() {
             </div>
             <div className="FormRow">
               <label>Title</label>
-              <input />
+              <input {...form.register("title")} />
             </div>
             <div className="FormRow">
               <label>Headline</label>
-              <input />
+              <input {...form.register("headline")} />
             </div>
             <div className="FormRow">
               <label>Categories</label>
-              <CategorySelector categories={categories} />
+              <Controller
+                control={form.control}
+                name={"categoryIds"}
+                render={(field) => (
+                  <CategorySelector
+                    categories={categories}
+                    selectedCategoryIds={field.field.value}
+                    onSelectedCategoryIdsChange={field.field.onChange}
+                  />
+                )}
+              />
             </div>
             <div className={"flex w-full space-x-8"}>
               <div className={"FormRow w-1/2"}>
                 <label>Cooking time (Minutes)</label>
-                <input type={"number"} />
+                <input type={"number"} {...form.register("cookTime")} />
               </div>
               <div className={"FormRow w-1/2"}>
                 <label>Preparation time (Minutes)</label>
-                <input type={"number"} />
+                <input type={"number"} {...form.register("preparationTime")} />
               </div>
             </div>
           </section>
           <section className={"w-1/2"}>
             <div className={"FormRow"}>
               <label>Image</label>
-              <img
-                src={"/images/recipes/food_3.png"}
-                className={"rounded ps-2"}
+              <Controller
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <ImageCropperField
+                    value={field.value}
+                    onChange={field.onChange}
+                    label="Bild auswählen & zuschneiden"
+                  />
+                )}
               />
             </div>
           </section>
@@ -290,27 +342,40 @@ function RouteComponent() {
       </section>
       <div className={"ButtonBar"}>
         <button>Save</button>
-        <button>Save</button>
+      </div>
+      <div className={"Feedback"}>
+        {mutation.isSuccess && (
+          <p className={"success"}>The recipe has been saved!</p>
+        )}
+        {mutation.isError && (
+          <p className={"error"}>
+            No no noThe recipe has been saved! {JSON.stringify(mutation.error)}
+          </p>
+        )}
       </div>
     </form>
   );
 }
-
 type CategorySelectorProps = {
   categories: CategoryDto[];
+  selectedCategoryIds: string[];
+  onSelectedCategoryIdsChange(newCategoryIds: string[]): void;
 };
 
-function CategorySelector({ categories }: CategorySelectorProps) {
-  const [selectedCategoryIds, setSelectedCategoryIds] = useState<string[]>([]);
+function CategorySelector({
+  categories,
+  selectedCategoryIds,
+  onSelectedCategoryIdsChange,
+}: CategorySelectorProps) {
   const [orderBy, setOrderBy] = useState<"type" | "title">("title");
 
   const handleClick = (categoryId: string) => {
     if (selectedCategoryIds.includes(categoryId)) {
-      setSelectedCategoryIds(
+      onSelectedCategoryIdsChange(
         selectedCategoryIds.filter((cId) => cId !== categoryId),
       );
     } else {
-      setSelectedCategoryIds([...selectedCategoryIds, categoryId]);
+      onSelectedCategoryIdsChange([...selectedCategoryIds, categoryId]);
     }
   };
 
@@ -330,6 +395,7 @@ function CategorySelector({ categories }: CategorySelectorProps) {
           Title
         </button>
         <button
+          type={"button"}
           className={orderBy === "type" ? "selected" : undefined}
           onClick={() => setOrderBy("type")}
         >

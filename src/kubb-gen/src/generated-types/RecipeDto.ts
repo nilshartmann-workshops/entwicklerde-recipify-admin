@@ -8,7 +8,7 @@ import { z } from 'zod/v4'
 
 export const RecipeDto = z.object({
   id: z.string(),
-  createdAt: z.iso.datetime({ offset: true }),
+  createdAt: z.iso.datetime({ local: true }),
   userFullname: z.string(),
   title: z.string(),
   headline: z.string(),
@@ -20,6 +20,7 @@ export const RecipeDto = z.object({
   mealType: z.string(),
   averageRating: z.number(),
   likes: z.int(),
+  image: z.string(),
 })
 
 export type RecipeDto = z.infer<typeof RecipeDto>

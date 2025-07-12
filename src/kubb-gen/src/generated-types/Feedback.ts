@@ -7,7 +7,7 @@ import { z } from 'zod/v4'
 
 export const Feedback = z.object({
   id: z.int().optional(),
-  createdAt: z.iso.datetime({ offset: true }),
+  createdAt: z.iso.datetime({ local: true }),
   commenter: z.string(),
   rating: z.int(),
   comment: z.string(),
