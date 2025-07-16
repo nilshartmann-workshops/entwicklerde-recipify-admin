@@ -6,3 +6,4 @@ public/favicons/**
 public/mockServiceWorker.js
 
 src/routeTree.gen.ts
+api-docs.yaml

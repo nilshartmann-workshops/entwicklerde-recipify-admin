@@ -8,7 +8,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import ky from "ky";
 import { useState } from "react";
 
-import { ImageDto } from "../kubb-gen";
+import { ImageDto } from "../_generated";
 import ImageSelector from "./ImageSelector.tsx";
 import UploadImageForm from "./UploadImageForm.tsx";
 

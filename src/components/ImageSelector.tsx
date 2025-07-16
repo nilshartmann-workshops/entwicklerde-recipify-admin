@@ -1,6 +1,6 @@
 import { useDeferredValue, useState } from "react";
 
-import type { ImageDto } from "../kubb-gen";
+import type { ImageDto } from "../_generated";
 
 type ImageSelectorProps = {
   allImages: ImageDto[];

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { ImageDto } from "../kubb-gen";
+import type { ImageDto } from "../_generated";
 import UploadImageForm from "./UploadImageForm.tsx";
 
 export default function App() {

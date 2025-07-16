@@ -17,7 +17,7 @@ import {
   CreateRecipeMutationResponse,
   ImageDto,
   MealTypeDto,
-} from "../kubb-gen";
+} from "../_generated";
 import ImageSelectorDialog from "./ImageSelectorDialog.tsx";
 
 const RecipeFormSchema = z.object({

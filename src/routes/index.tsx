@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
+import type { ImageDto } from "../_generated";
 import ImageSelectorDialog from "../components/ImageSelectorDialog.tsx";
-import { ImageDto } from "../kubb-gen";
 
 export const Route = createFileRoute("/")({
   component: Demo,
