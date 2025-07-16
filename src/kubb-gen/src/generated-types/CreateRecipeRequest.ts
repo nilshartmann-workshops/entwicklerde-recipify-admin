@@ -17,7 +17,7 @@ export const CreateRecipeRequest = z.object({
   get ingredients() {
     return z.array(IngredientRequest)
   },
-  image: z.string(),
+  imageId: z.string(),
 })
 
 export type CreateRecipeRequest = z.infer<typeof CreateRecipeRequest>

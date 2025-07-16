@@ -5,10 +5,10 @@ import Cropper, { type Area } from "react-easy-crop";
 import { getCroppedImg } from "./get-cropped-image.ts";
 
 export default function UploadImageForm() {
-  const [title, setTitle] = useState("");
+  const [imageTitle, setImageTitle] = useState("");
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [croppedArea, setCroppedArea] = useState<Area | null>(null);
+  const [croppedArea, setCroppedArea] = useState<Area>();
   const [zoom, setZoom] = useState(1);
   const [formState, setFormState] = useState<{
     type: "success" | "error";
@@ -17,7 +17,6 @@ export default function UploadImageForm() {
 
   const handleSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log("file", file);
     if (!file) {
       setImageSrc(null);
       return;
@@ -44,7 +43,7 @@ export default function UploadImageForm() {
     const fileToUpload = await getCroppedImg(imageSrc, croppedArea);
 
     const formData = new FormData();
-    formData.set("title", title);
+    formData.set("title", imageTitle);
     formData.set("file", fileToUpload);
 
     try {
@@ -53,8 +52,6 @@ export default function UploadImageForm() {
           body: formData,
         })
         .json();
-
-      console.log("Response", response);
 
       setFormState({
         type: "success",
@@ -75,8 +72,11 @@ export default function UploadImageForm() {
         <h2>Upload Image</h2>
         <div className={"FormControl"}>
           <label>Title</label>
-          <input type={"text"} onChange={(e) => setTitle(e.target.value)} />
-          {title.trim().length === 0 && (
+          <input
+            type={"text"}
+            onChange={(e) => setImageTitle(e.target.value)}
+          />
+          {imageTitle.trim().length === 0 && (
             <div className={"error"}>Please enter an image title</div>
           )}
         </div>

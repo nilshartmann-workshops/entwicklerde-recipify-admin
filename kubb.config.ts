@@ -11,8 +11,8 @@ async function downloadFile() {
     throw new Error(`Fetch failed: ${response.status} ${response.statusText}`);
   }
 
-  const data = await response.arrayBuffer(); // Hol die Daten als ArrayBuffer
-  await writeFile("api-docs.yaml", Buffer.from(data)); // Speichern
+  const data = await response.arrayBuffer();
+  await writeFile("api-docs.yaml", Buffer.from(data));
 
   console.log("Datei erfolgreich gespeichert!");
 }
@@ -29,7 +29,7 @@ export default defineConfig(async () => {
     output: {
       clean: true,
       extension: { ".ts": "" },
-      path: "./src/kubb-gen",
+      path: "./src/_generated",
       barrelType: "all",
     },
     plugins: [
@@ -42,7 +42,7 @@ export default defineConfig(async () => {
         inferred: true,
         operations: true,
         output: {
-          path: "./src/generated-types",
+          path: "./api-types",
           barrelType: "propagate",
         },
         unknownType: "unknown",

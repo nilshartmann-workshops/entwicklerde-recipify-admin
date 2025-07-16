@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
-import ImageSelector from "../components/ImageSelector.tsx";
-import RecipeForm from "../components/ReceipeForm.tsx";
-import { demoImages } from "../data.ts";
+import ImageSelectorDialog from "../components/ImageSelectorDialog.tsx";
 import { ImageDto } from "../kubb-gen";
 
 export const Route = createFileRoute("/")({
@@ -17,12 +15,17 @@ function Demo() {
 
   return (
     <div>
-      <RecipeForm />
-      <ImageSelector
-        allImages={demoImages}
+      <ImageSelectorDialog
+        open={true}
         selectedImage={selectedImageId}
-        onImageSelected={(imageId) => setSelectedImageId(imageId)}
+        onImageSelected={(i) => setSelectedImageId(i)}
       />
+      {/*<RecipeForm />*/}
+      {/*<ImageSelector*/}
+      {/*  allImages={demoImages}*/}
+      {/*  selectedImage={selectedImageId}*/}
+      {/*  onImageSelected={(imageId) => setSelectedImageId(imageId)}*/}
+      {/*/>*/}
     </div>
   );
 }

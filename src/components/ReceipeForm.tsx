@@ -1,10 +1,4 @@
 import {
-  Dialog,
-  DialogBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import {
   DragDropContext,
   Draggable,
   Droppable,
@@ -17,20 +11,19 @@ import { type ReactNode, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod/v4";
 
-import { demoImages } from "../data.ts";
 import {
   CategoryDto,
   type CreateRecipeMutationRequest,
   CreateRecipeMutationResponse,
+  ImageDto,
   MealTypeDto,
 } from "../kubb-gen";
-import { type ImageDto, ImageDtoSchema } from "../types.ts";
-import ImageSelector from "./ImageSelector.tsx";
+import ImageSelectorDialog from "./ImageSelectorDialog.tsx";
 
 const RecipeFormSchema = z.object({
   mealTypeId: z.string().nonempty(),
   title: z.string().nonempty(),
-  image: ImageDtoSchema,
+  image: ImageDto,
   headline: z.string().nonempty(),
   preparationTime: z.coerce.number().min(0),
   cookTime: z.coerce.number().min(0),
@@ -97,12 +90,6 @@ export default function RecipeForm() {
           return CategoryDto.array().parse(response);
         },
       },
-      {
-        queryKey: ["admin", "images"],
-        async queryFn() {
-          return demoImages as ImageDto[];
-        },
-      },
     ],
   });
 
@@ -155,11 +142,11 @@ export default function RecipeForm() {
 
     // const fileBase64 = await fileToBase64(data.imageId);
     //
-    // mutation.mutate({
-    //   ...data,
-    //   imageId: fileBase64,
-    //   instructions: data.instructions.map((i) => i.value),
-    // });
+    mutation.mutate({
+      ...data,
+      imageId: data.image.id,
+      instructions: data.instructions.map((i) => i.value),
+    });
   };
 
   const handleSubmitError = (err: any) => {
@@ -225,33 +212,15 @@ export default function RecipeForm() {
                 control={form.control}
                 name={"image"}
                 render={(field) => (
-                  <Dialog
+                  <ImageSelectorDialog
                     open={isImageSelectorOpen}
                     onClose={() => setIsImageSelectorOpen(false)}
-                    className="Dialog"
-                  >
-                    <DialogBackdrop className="fixed inset-0 bg-black/30" />
-                    <div className="fixed inset-0 w-screen p-4">
-                      <div className="flex h-full items-center justify-center">
-                        <DialogPanel className="max-w-1/2 space-y-4 rounded-lg bg-white p-12 shadow-2xl">
-                          <DialogTitle className="font-space border-b-1 border-dotted pb-4 text-3xl font-bold">
-                            Select image
-                          </DialogTitle>
-                          <div className={"max-h-96 overflow-y-scroll pe-2"}>
-                            <ImageSelector
-                              allImages={demoImages}
-                              selectedImage={field.field.value}
-                              onImageSelected={(selectedImage) => {
-                                field.field.onChange(selectedImage);
-                                setIsImageSelectorOpen(false);
-                              }}
-                            />
-                          </div>
-                          <div className="flex gap-4"></div>
-                        </DialogPanel>
-                      </div>
-                    </div>
-                  </Dialog>
+                    selectedImage={field.field.value}
+                    onImageSelected={(image) => {
+                      field.field.onChange(image);
+                      setIsImageSelectorOpen(false);
+                    }}
+                  />
                 )}
               />
             </div>
@@ -400,48 +369,50 @@ export default function RecipeForm() {
                             snapshot.isDragging ? "dragging" : undefined
                           }
                         >
-                          <div
-                            {...provided.dragHandleProps}
-                            className="cursor-move px-2 text-xl"
-                          >
-                            ☰
-                          </div>
-                          <div className={"FormControl"}>
+                          <div>
+                            <div
+                              className={"DragHandle"}
+                              {...provided.dragHandleProps}
+                            >
+                              ☰
+                            </div>
                             <div className={"Step"}>Step {index + 1}</div>
-                          </div>
-                          <div className={"flex"}>
                             <input
                               {...form.register(`instructions.${index}.value`)}
                             />
+                            <div className={"Buttons"}>
+                              <button
+                                type={"button"}
+                                className={"primary"}
+                                onClick={() => {
+                                  instructions.insert(index + 1, {
+                                    value: "",
+                                  });
+                                }}
+                              >
+                                <i className={"fa fa-circle-plus"} />
+                                <span>Add</span>
+                              </button>
+                              <button
+                                type={"button"}
+                                className={"secondary"}
+                                disabled={instructions.fields.length === 1}
+                                onClick={() => instructions.remove(index)}
+                              >
+                                <i className="fa-regular fa-circle-xmark"></i>
+                                <span>Remove</span>
+                              </button>
+                            </div>
                           </div>
-                          <div className={"Buttons"}>
-                            <button
-                              type={"button"}
-                              className={"primary"}
-                              onClick={() => {
-                                instructions.insert(index + 1, {
-                                  value: "",
-                                });
-                              }}
-                            >
-                              <i className={"fa fa-circle-plus"} />
-                              <span>Add</span>
-                            </button>
-                            <button
-                              type={"button"}
-                              className={"secondary"}
-                              disabled={instructions.fields.length === 1}
-                              onClick={() => instructions.remove(index)}
-                            >
-                              <i className="fa-regular fa-circle-xmark"></i>
-                              <span>Remove</span>
-                            </button>
-                            <ErrorMessage>
-                              {
-                                form.formState.errors.instructions?.[index]
-                                  ?.value?.message
-                              }
-                            </ErrorMessage>
+                          <div>
+                            <div className={"col-start-3"}>
+                              <ErrorMessage>
+                                {
+                                  form.formState.errors.instructions?.[index]
+                                    ?.value?.message
+                                }
+                              </ErrorMessage>
+                            </div>
                           </div>
                         </li>
                       )}

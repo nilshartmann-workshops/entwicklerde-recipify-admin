@@ -31,6 +31,7 @@ export default function ImageSelector({
 
   return (
     <div className={"ImageSelector"}>
+      <h2>Select image</h2>
       <div className={"FormRow"}>
         <label>Filter</label>
         <input

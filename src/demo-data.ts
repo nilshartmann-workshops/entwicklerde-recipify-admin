@@ -1,4 +1,4 @@
-import type { CategoryDto } from "../kubb-gen";
+import type { CategoryDto } from "./kubb-gen";
 
 export function getAllCategories(): CategoryDto[] {
   return [

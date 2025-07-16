@@ -486,7 +486,7 @@ components:
       required:
       - categoryIds
       - headline
-      - image
+      - imageId
       - ingredients
       - instructions
       - mealTypeId
@@ -517,7 +517,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/IngredientRequest"
-        image:
+        imageId:
           type: string
     IngredientRequest:
       required:
