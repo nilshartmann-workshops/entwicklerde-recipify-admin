@@ -105,6 +105,47 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/DetailedRecipeDto"
+  /api/admin/images:
+    get:
+      tags:
+      - Admin
+      operationId: getImages
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ImageDto"
+    post:
+      tags:
+      - Admin
+      operationId: uploadImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - file
+              - title
+              type: object
+              properties:
+                file:
+                  type: string
+                  description: Imagefile
+                  format: binary
+                title:
+                  type: string
+                  description: Title (used for alt attribute)
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDto"
   /api/recipes/{recipeId}/likes:
     patch:
       tags:
@@ -346,6 +387,18 @@ paths:
                 type: array
                 items:
                   $ref: "#/components/schemas/MealTypeDto"
+  /api/admin/me:
+    get:
+      tags:
+      - Admin
+      operationId: getMe
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/MeDto"
   /api/admin/categories:
     get:
       tags:
@@ -547,7 +600,7 @@ components:
           type: integer
           format: int32
         image:
-          type: string
+          $ref: "#/components/schemas/ImageDto"
         instructions:
           type: array
           items:
@@ -556,6 +609,19 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Ingredient"
+    ImageDto:
+      required:
+      - id
+      - src
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+        src:
+          type: string
+        title:
+          type: string
     Ingredient:
       required:
       - amount
@@ -628,7 +694,7 @@ components:
           type: integer
           format: int32
         image:
-          type: string
+          $ref: "#/components/schemas/ImageDto"
     IncrementLikesResponse:
       required:
       - newLikes
@@ -674,9 +740,9 @@ components:
       properties:
         id:
           type: string
-        title:
-          type: string
         mealType:
+          type: string
+        title:
           type: string
     GetSearchDetailResponse:
       required:
@@ -778,11 +844,18 @@ components:
         mealType:
           type: string
         image:
-          type: string
+          $ref: "#/components/schemas/ImageDto"
     MealTypeDto:
       type: object
       properties:
         id:
           type: string
         name:
+          type: string
+    MeDto:
+      required:
+      - fullname
+      type: object
+      properties:
+        fullname:
           type: string

@@ -5,10 +5,10 @@
 
 import { z } from 'zod/v4'
 
-export const RecipeSummaryDto = z.object({
+export const ImageDto = z.object({
   id: z.string(),
-  mealType: z.string(),
+  src: z.string(),
   title: z.string(),
 })
 
-export type RecipeSummaryDto = z.infer<typeof RecipeSummaryDto>
+export type ImageDto = z.infer<typeof ImageDto>

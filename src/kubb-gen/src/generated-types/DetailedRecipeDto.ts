@@ -4,6 +4,7 @@
  */
 
 import { CategoryDto } from './CategoryDto'
+import { ImageDto } from './ImageDto'
 import { Ingredient } from './Ingredient'
 import { Instruction } from './Instruction'
 import { z } from 'zod/v4'
@@ -22,7 +23,9 @@ export const DetailedRecipeDto = z.object({
   mealType: z.string(),
   averageRating: z.number(),
   likes: z.int(),
-  image: z.string(),
+  get image() {
+    return ImageDto
+  },
   get instructions() {
     return z.array(Instruction)
   },

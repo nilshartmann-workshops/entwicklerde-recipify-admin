@@ -1,0 +1,1 @@
+{"required":["id","src","title"],"type":"object","properties":{"id":{"type":"string"},"src":{"type":"string"},"title":{"type":"string"}},"x-readme-ref-name":"ImageDto"}

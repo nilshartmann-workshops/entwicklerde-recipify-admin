@@ -1,0 +1,61 @@
+export const demoImages = [
+  { id: "1", title: "Chicken Curry", src: "/images/recipes/food_17.png" },
+  {
+    id: "11",
+    title: "Stuffed Bell Peppers",
+    src: "/images/recipes/food_18.png",
+  },
+  { id: "12", title: "Fish and Chips", src: "/images/recipes/food_19.png" },
+  { id: "13", title: "Tiramisu", src: "/images/recipes/food_20.png" },
+  { id: "14", title: "Steak and Potatoes", src: "/images/recipes/food_21.png" },
+  {
+    id: "15",
+    title: "Chicken Alfredo Pasta",
+    src: "/images/recipes/food_22.png",
+  },
+  { id: "16", title: "Mushroom Risotto", src: "/images/recipes/food_23.png" },
+  { id: "17", title: "Beef Stir Fry", src: "/images/recipes/food_24.png" },
+  { id: "18", title: "Baked Salmon", src: "/images/recipes/food_25.png" },
+  { id: "19", title: "Cheese Pizza", src: "/images/recipes/food_26.png" },
+  {
+    id: "21",
+    title: "Spinach and Artichoke Dip",
+    src: "/images/recipes/food_27.png",
+  },
+  {
+    id: "31",
+    title: "Chicken Caesar Salad",
+    src: "/images/recipes/food_28.png",
+  },
+  { id: "41", title: "Chocolate Mousse", src: "/images/recipes/food_29.png" },
+  { id: "51", title: "Black Forest Cake", src: "/images/recipes/food_30.png" },
+  {
+    id: "61",
+    title: "Classic Margherita Pizza",
+    src: "/images/recipes/food_31.png",
+  },
+  {
+    id: "71",
+    title: "Spicy Dynamite Shrimp",
+    src: "/images/recipes/food_32.png",
+  },
+  { id: "81", title: "Vegetable Lasagna", src: "/images/recipes/food_33.png" },
+  {
+    id: "91",
+    title: "Homemade Chicken Noodle Soup",
+    src: "/images/recipes/food_34.png",
+  },
+  { id: "111", title: "Vegetarian Tacos", src: "/images/recipes/food_35.png" },
+  { id: "121", title: "Banana Bread", src: "/images/recipes/food_36.png" },
+  { id: "131", title: "Egg Fried Rice", src: "/images/recipes/food_37.png" },
+  {
+    id: "141",
+    title: "Classic Caesar Salad",
+    src: "/images/recipes/food_38.png",
+  },
+  {
+    id: "151",
+    title: "Classic Greek Salad",
+    src: "/images/recipes/food_39.png",
+  },
+];

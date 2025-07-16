@@ -85,56 +85,54 @@
   @apply container mx-auto mt-8;
 }
 
-.RecipeForm {
+form {
   @apply font-inter space-y-12 bg-white;
 }
 
-.RecipeForm label {
+form label {
   @apply ps-2 text-sm font-semibold tracking-wide text-gray-700;
 }
 
-.FormRow {
-  @apply flex flex-col space-y-2;
+.FormRow label {
+  @apply text-sm font-semibold tracking-wide text-gray-700;
 }
 
-.RecipeForm section {
+form section {
   @apply flex flex-col space-y-4;
 }
 
-.RecipeForm .ButtonBar {
-  @apply flex gap-x-8 border-t border-dotted border-t-gray-300 pt-8;
+form .ButtonBar {
+  @apply flex items-center gap-x-8 border-t border-dotted border-t-gray-300 pt-8;
 }
 
-.RecipeForm .ButtonBar button {
+form .ButtonBar button.primary {
   @apply border-green bg-green me-2 flex w-fit cursor-pointer rounded border px-4 py-2 text-2xl text-white hover:border-[#4B792A] hover:bg-[#4B792A];
 }
 
-.RecipeForm .ButtonBar button:disabled {
+form .ButtonBar button.primary:disabled {
   @apply cursor-default border-[#BDDFA4] bg-[#BDDFA4] hover:border-[#BDDFA4];
 }
 
-.RecipeForm section h2 {
+form .ButtonBar button.secondary {
+  @apply me-2 flex w-fit cursor-pointer items-center rounded border border-gray-200 bg-gray-200 px-2 py-1 text-lg hover:bg-gray-400;
+}
+
+form .ButtonBar button.secondary:disabled {
+  @apply cursor-default border-gray-200 bg-gray-200 hover:bg-gray-200;
+}
+
+form section h2 {
   @apply font-space mb-8 text-5xl font-bold;
 }
 
-.FormRow input,
-.FormRow select,
-.RecipeForm input {
+select,
+input {
   @apply w-full rounded-lg border border-gray-400 px-2 py-3;
 }
 
-.FormRow.TimeSelector > div {
-  @apply flex w-5/6 space-x-12 text-gray-500;
+.FormRow {
+  @apply flex flex-row items-center space-x-2;
 }
-
-.FormRow.TimeSelector > div label {
-  @apply font-medium;
-}
-
-.FormRow.TimeSelector > div div.Input {
-  @apply flex space-x-4;
-}
-
 .FormControl {
   @apply flex flex-col space-y-1 pb-4;
 }
@@ -167,20 +165,23 @@
   @apply font-space text-red w-[6rem] self-center font-medium whitespace-nowrap;
 }
 
-.RecipeForm .Instructions button.primary {
-  @apply ms-[6.7rem] -mt-6;
-}
-
 .RecipeForm .Buttons {
   @apply flex items-center gap-x-4;
 }
 
+.UploadImageForm .Images {
+  @apply flex flex-row gap-x-8;
+}
+.UploadImageForm .Images > * {
+  @apply w-1/2;
+}
+
 .ImageCropperField {
-  @apply flex flex-col gap-y-4;
+  @apply w-1/2;
 }
 
 .ImageCropperField .CropContainer {
-  @apply relative h-77 w-full rounded-lg bg-gray-200;
+  @apply relative h-77 rounded-lg bg-gray-200;
 }
 .ImageCropperField .reactEasyCrop_CropArea {
   @apply rounded-lg border-0 shadow-none;
@@ -194,18 +195,56 @@
   @apply rounded-lg;
 }
 
-.RecipeForm button[type="button"].primary,
-.RecipeForm button[type="button"].primary {
+.FormControl img {
+  @apply h-77 rounded-lg object-cover;
+}
+
+.ImagePreview {
+  @apply grid grid-cols-[20px_1fr_1fr] items-center gap-x-4;
+}
+
+.ImagePreview img {
+  @apply h-16 w-32 rounded-lg object-cover text-right transition-transform duration-200;
+}
+
+.ImagePreview img:hover {
+  @apply relative z-10 scale-200 shadow-lg;
+}
+
+.ImageSelector {
+  @apply mt-2 flex flex-col gap-y-8;
+}
+
+.ImageSelector .ImagePreview {
+  @apply w-full cursor-pointer rounded-lg border border-gray-400 px-2 py-3 text-center hover:bg-gray-200;
+}
+
+.ImageSelector .ImagePreview.selected {
+  @apply border-green-500 bg-green-200/50;
+}
+
+.ImageSelector .ImagePreview.selected i {
+  @apply font-bold text-green-500;
+}
+
+form button[type="button"].primary {
   @apply bg-orange_2-500/90 hover:bg-orange_2-500 flex w-fit cursor-pointer items-center gap-x-2 rounded px-2 py-1 text-white;
 }
 
-.RecipeForm button[type="button"].secondary,
-.RecipeForm button[type="button"].secondary {
+form button[type="button"].secondary {
   @apply flex h-fit cursor-pointer items-center gap-x-2 rounded bg-gray-200 px-2 py-1 hover:bg-gray-400;
 }
 
-.RecipeForm .Feedback .success {
+form button[type="button"].secondary:disabled {
+  @apply cursor-default text-gray-400 hover:bg-gray-200;
+}
+
+form .Feedback .success {
   @apply border-green bg-green/80 rounded-lg border-2 p-2 text-white;
+}
+
+form .error {
+  @apply text-red ps-2 font-medium;
 }
 
 .RecipeForm .Feedback .error {

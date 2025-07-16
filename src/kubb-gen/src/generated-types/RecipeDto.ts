@@ -4,6 +4,7 @@
  */
 
 import { CategoryDto } from './CategoryDto'
+import { ImageDto } from './ImageDto'
 import { z } from 'zod/v4'
 
 export const RecipeDto = z.object({
@@ -20,7 +21,9 @@ export const RecipeDto = z.object({
   mealType: z.string(),
   averageRating: z.number(),
   likes: z.int(),
-  image: z.string(),
+  get image() {
+    return ImageDto
+  },
 })
 
 export type RecipeDto = z.infer<typeof RecipeDto>

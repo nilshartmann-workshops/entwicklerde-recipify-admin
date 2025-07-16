@@ -5,7 +5,10 @@
 
 import { CreateRecipeMutationRequest, CreateRecipe200, CreateRecipeMutationResponse } from './CreateRecipe'
 import { GetCategories200, GetCategoriesQueryResponse } from './GetCategories'
+import { GetImages200, GetImagesQueryResponse } from './GetImages'
+import { GetMe200, GetMeQueryResponse } from './GetMe'
 import { GetMealTypes200, GetMealTypesQueryResponse } from './GetMealTypes'
+import { UploadImageMutationRequest, UploadImage200, UploadImageMutationResponse } from './UploadImage'
 
 export const operations = {
   createRecipe: {
@@ -21,6 +24,32 @@ export const operations = {
     },
     errors: {},
   },
+  getImages: {
+    request: undefined,
+    parameters: {
+      path: undefined,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: GetImages200,
+      default: GetImagesQueryResponse,
+    },
+    errors: {},
+  },
+  uploadImage: {
+    request: UploadImageMutationRequest,
+    parameters: {
+      path: undefined,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: UploadImage200,
+      default: UploadImageMutationResponse,
+    },
+    errors: {},
+  },
   getMealTypes: {
     request: undefined,
     parameters: {
@@ -31,6 +60,19 @@ export const operations = {
     responses: {
       200: GetMealTypes200,
       default: GetMealTypesQueryResponse,
+    },
+    errors: {},
+  },
+  getMe: {
+    request: undefined,
+    parameters: {
+      path: undefined,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: GetMe200,
+      default: GetMeQueryResponse,
     },
     errors: {},
   },
@@ -53,8 +95,15 @@ export const paths = {
   '/api/admin/recipe': {
     post: operations['createRecipe'],
   },
+  '/api/admin/images': {
+    get: operations['getImages'],
+    post: operations['uploadImage'],
+  },
   '/api/admin/meal-types': {
     get: operations['getMealTypes'],
+  },
+  '/api/admin/me': {
+    get: operations['getMe'],
   },
   '/api/admin/categories': {
     get: operations['getCategories'],

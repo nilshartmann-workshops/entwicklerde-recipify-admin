@@ -1,0 +1,1 @@
+{"required":["fullname"],"type":"object","properties":{"fullname":{"type":"string"}},"x-readme-ref-name":"MeDto"}

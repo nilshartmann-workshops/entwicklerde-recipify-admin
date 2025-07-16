@@ -3,13 +3,16 @@
  * Do not edit manually.
  */
 
+import { ImageDto } from './ImageDto'
 import { z } from 'zod/v4'
 
 export const ExploreRecipeDto = z.object({
   id: z.string(),
   title: z.string(),
   mealType: z.string(),
-  image: z.string(),
+  get image() {
+    return ImageDto
+  },
 })
 
 export type ExploreRecipeDto = z.infer<typeof ExploreRecipeDto>
