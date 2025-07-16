@@ -3,8 +3,9 @@
  * Do not edit manually.
  */
 
-import { MeDto } from './MeDto'
 import { z } from 'zod/v4'
+
+import { MeDto } from './MeDto'
 
 /**
  * @description OK

@@ -3,8 +3,9 @@
  * Do not edit manually.
  */
 
-import { IngredientRequest } from './IngredientRequest'
 import { z } from 'zod/v4'
+
+import { IngredientRequest } from './IngredientRequest'
 
 export const CreateRecipeRequest = z.object({
   title: z.string(),

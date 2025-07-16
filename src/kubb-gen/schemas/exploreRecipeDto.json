@@ -1,1 +1,0 @@
-{"required":["id","image","mealType","title"],"type":"object","properties":{"id":{"type":"string"},"title":{"type":"string"},"mealType":{"type":"string"},"image":{"required":["id","src","title"],"type":"object","properties":{"id":{"type":"string"},"src":{"type":"string"},"title":{"type":"string"}},"x-readme-ref-name":"ImageDto"}},"x-readme-ref-name":"ExploreRecipeDto"}

@@ -1,1 +1,0 @@
-{"required":["comment","commenter","stars"],"type":"object","properties":{"commenter":{"maxLength":2147483647,"minLength":3,"type":"string"},"stars":{"maximum":5,"minimum":0,"type":"integer","format":"int32"},"comment":{"type":"string"}},"x-readme-ref-name":"NewFeedback"}

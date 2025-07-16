@@ -3,8 +3,9 @@
  * Do not edit manually.
  */
 
-import { CategoryDto } from './CategoryDto'
 import { z } from 'zod/v4'
+
+import { CategoryDto } from './CategoryDto'
 
 /**
  * @description OK

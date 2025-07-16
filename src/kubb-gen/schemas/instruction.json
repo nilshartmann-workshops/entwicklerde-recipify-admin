@@ -1,1 +1,0 @@
-{"type":"object","properties":{"orderNo":{"type":"integer","format":"int32"},"description":{"type":"string"}},"x-readme-ref-name":"Instruction"}

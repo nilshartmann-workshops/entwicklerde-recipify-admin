@@ -3,12 +3,12 @@
  * Do not edit manually.
  */
 
-import { CreateRecipeMutationRequest, CreateRecipe200, CreateRecipeMutationResponse } from './CreateRecipe'
+import { CreateRecipe200, CreateRecipeMutationRequest, CreateRecipeMutationResponse } from './CreateRecipe'
 import { GetCategories200, GetCategoriesQueryResponse } from './GetCategories'
 import { GetImages200, GetImagesQueryResponse } from './GetImages'
 import { GetMe200, GetMeQueryResponse } from './GetMe'
 import { GetMealTypes200, GetMealTypesQueryResponse } from './GetMealTypes'
-import { UploadImageMutationRequest, UploadImage200, UploadImageMutationResponse } from './UploadImage'
+import { UploadImage200, UploadImageMutationRequest, UploadImageMutationResponse } from './UploadImage'
 
 export const operations = {
   createRecipe: {

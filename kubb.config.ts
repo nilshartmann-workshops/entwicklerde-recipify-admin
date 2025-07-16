@@ -1,7 +1,31 @@
 import { defineConfig } from "@kubb/core";
 import { pluginOas } from "@kubb/plugin-oas";
 import { pluginZod } from "@kubb/plugin-zod";
+import { exec } from "child_process";
 import { writeFile } from "fs/promises";
+import { promisify } from "util";
+
+const execAsync = promisify(exec);
+
+const apiDocsFull = "api-docs-full.yaml";
+const apiDocsFiltered = "api-docs.yaml";
+const outputPath = "./src/_generated";
+
+async function formatOpenApi() {
+  try {
+    const { stdout, stderr } = await execAsync(
+      `openapi-format ${apiDocsFull} -o ${apiDocsFiltered} -f api-docs-filter.json`,
+    );
+    if (stderr) {
+      console.error(`stderr: ${stderr}`);
+    }
+    console.log(`stdout: ${stdout}`);
+  } catch (error) {
+    console.error(
+      `Could not format document: ${error instanceof Error ? error.message : String(error)}`,
+    );
+  }
+}
 
 async function downloadFile() {
   const url = "http://localhost:8080/v3/api-docs.yaml";
@@ -12,9 +36,11 @@ async function downloadFile() {
   }
 
   const data = await response.arrayBuffer();
-  await writeFile("api-docs.yaml", Buffer.from(data));
+  await writeFile(apiDocsFiltered, Buffer.from(data));
 
-  console.log("Datei erfolgreich gespeichert!");
+  await formatOpenApi();
+
+  console.log("✅ api docs downloaded and formatted succesfully");
 }
 
 export default defineConfig(async () => {
@@ -24,13 +50,20 @@ export default defineConfig(async () => {
     name: "recipify",
     root: ".",
     input: {
-      path: "./api-docs.yaml",
+      path: apiDocsFiltered,
     },
     output: {
       clean: true,
       extension: { ".ts": "" },
-      path: "./src/_generated",
+      path: outputPath,
       barrelType: "all",
+    },
+    hooks: {
+      done: [
+        `rimraf ${outputPath}/schemas`,
+        `eslint --fix ${outputPath}`,
+        `prettier --write ${outputPath}`,
+      ],
     },
     plugins: [
       pluginOas(),

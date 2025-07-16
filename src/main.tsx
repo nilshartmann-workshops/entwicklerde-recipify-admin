@@ -1,7 +1,10 @@
 import "./index.css";
 
+import { RouterProvider } from "@tanstack/react-router";
 import { createRoot } from "react-dom/client";
 
-import App from "./components/App.tsx";
+import { recipifyRouter } from "./create-router.tsx";
 
-createRoot(document.getElementById("root")!).render(<App />);
+createRoot(document.getElementById("root")!).render(
+  <RouterProvider router={recipifyRouter} />,
+);

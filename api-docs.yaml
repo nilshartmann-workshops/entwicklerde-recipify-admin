@@ -3,494 +3,111 @@ info:
   title: OpenAPI definition
   version: v0
 servers:
-- url: http://localhost:8080
-  description: Generated server url
-tags:
-- name: Admin
-  description: Admin Endpoints
+  - url: 'http://localhost:8080'
+    description: Generated server url
 paths:
-  /api/recipes/{recipeId}/feedbacks:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: getFeedbacks
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetRecipeFeedbacksResponse"
-    post:
-      tags:
-      - recipe-api-controller
-      operationId: addFeedback
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PostFeedbackRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PostFeedbackResponse"
-  /api/newsletter/subscribe:
-    post:
-      tags:
-      - newsletter-api-controller
-      operationId: subscribeToNewsletter
-      parameters:
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/PostNewsletterRegistrationRequest"
-        required: true
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PostNewsletterRegistrationResponse"
   /api/admin/recipe:
     post:
-      tags:
-      - Admin
       operationId: createRecipe
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateRecipeRequest"
-        required: true
+              $ref: '#/components/schemas/CreateRecipeRequest'
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/DetailedRecipeDto"
+                $ref: '#/components/schemas/DetailedRecipeDto'
+      tags:
+        - Admin
   /api/admin/images:
     get:
-      tags:
-      - Admin
       operationId: getImages
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/ImageDto"
-    post:
+                  $ref: '#/components/schemas/ImageDto'
       tags:
-      - Admin
+        - Admin
+    post:
       operationId: uploadImage
       requestBody:
         content:
           multipart/form-data:
             schema:
-              required:
-              - file
-              - title
               type: object
               properties:
                 file:
-                  type: string
                   description: Imagefile
+                  type: string
                   format: binary
                 title:
-                  type: string
                   description: Title (used for alt attribute)
+                  type: string
+              required:
+                - file
+                - title
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/ImageDto"
-  /api/recipes/{recipeId}/likes:
-    patch:
+                $ref: '#/components/schemas/ImageDto'
       tags:
-      - recipe-api-controller
-      operationId: incrementLikes
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/IncrementLikesResponse"
-  /api/search:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: search
-      parameters:
-      - name: search
-        in: query
-        required: true
-        schema:
-          type: string
-      - name: page
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PageResponseRecipeSummaryDto"
-  /api/search/{recipeId}/details:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: getSearchDetails
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetSearchDetailResponse"
-  /api/recipes:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: recipes
-      parameters:
-      - name: page
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-      - name: size
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int32
-      - name: sort
-        in: query
-        required: false
-        schema:
-          type: string
-          enum:
-          - time
-          - likes
-          - rating
-      - name: ids
-        in: query
-        required: false
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PageResponseRecipeDto"
-  /api/recipes/{recipeId}:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: getRecipe
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetRecipeResponse"
-  /api/recipes/{recipeId}/ingredients:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: getIngredients
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/GetRecipeIngredientsResponse"
-  /api/recipes/{recipeId}/feedback:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: getFeedback
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: page
-        in: query
-        required: true
-        schema:
-          type: integer
-          format: int32
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/PageResponseFeedback"
-  /api/recipes/{recipeId}/explore:
-    get:
-      tags:
-      - recipe-api-controller
-      operationId: getExploreRecipes
-      parameters:
-      - name: recipeId
-        in: path
-        required: true
-        schema:
-          type: string
-      - name: slowdown
-        in: query
-        required: false
-        schema:
-          type: integer
-          format: int64
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ExploreRecipeDto"
+        - Admin
   /api/admin/meal-types:
     get:
-      tags:
-      - Admin
       operationId: getMealTypes
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/MealTypeDto"
+                  $ref: '#/components/schemas/MealTypeDto'
+      tags:
+        - Admin
   /api/admin/me:
     get:
-      tags:
-      - Admin
       operationId: getMe
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
-                $ref: "#/components/schemas/MeDto"
+                $ref: '#/components/schemas/MeDto'
+      tags:
+        - Admin
   /api/admin/categories:
     get:
-      tags:
-      - Admin
       operationId: getCategories
       responses:
-        "200":
+        '200':
           description: OK
           content:
             '*/*':
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/CategoryDto"
+                  $ref: '#/components/schemas/CategoryDto'
+      tags:
+        - Admin
 components:
   schemas:
-    NewFeedback:
-      required:
-      - comment
-      - commenter
-      - stars
-      type: object
-      properties:
-        commenter:
-          maxLength: 2147483647
-          minLength: 3
-          type: string
-        stars:
-          maximum: 5
-          minimum: 0
-          type: integer
-          format: int32
-        comment:
-          type: string
-    PostFeedbackRequest:
-      required:
-      - feedbackData
-      type: object
-      properties:
-        feedbackData:
-          $ref: "#/components/schemas/NewFeedback"
-    Feedback:
-      required:
-      - comment
-      - commenter
-      - createdAt
-      - rating
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        createdAt:
-          type: string
-          format: date-time
-        commenter:
-          type: string
-        rating:
-          type: integer
-          format: int32
-        comment:
-          type: string
-    PostFeedbackResponse:
-      required:
-      - newFeedback
-      type: object
-      properties:
-        newFeedback:
-          $ref: "#/components/schemas/Feedback"
-    PostNewsletterRegistrationRequest:
-      required:
-      - email
-      type: object
-      properties:
-        email:
-          type: string
-    PostNewsletterRegistrationResponse:
-      required:
-      - email
-      type: object
-      properties:
-        email:
-          type: string
     CreateRecipeRequest:
-      required:
-      - categoryIds
-      - headline
-      - imageId
-      - ingredients
-      - instructions
-      - mealTypeId
-      - title
       type: object
       properties:
         title:
@@ -516,14 +133,18 @@ components:
         ingredients:
           type: array
           items:
-            $ref: "#/components/schemas/IngredientRequest"
+            $ref: '#/components/schemas/IngredientRequest'
         imageId:
           type: string
-    IngredientRequest:
       required:
-      - amount
-      - name
-      - unit
+        - categoryIds
+        - headline
+        - imageId
+        - ingredients
+        - instructions
+        - mealTypeId
+        - title
+    IngredientRequest:
       type: object
       properties:
         amount:
@@ -533,13 +154,11 @@ components:
           type: string
         name:
           type: string
-    CategoryDto:
       required:
-      - description
-      - icon
-      - id
-      - title
-      - type
+        - amount
+        - name
+        - unit
+    CategoryDto:
       type: object
       properties:
         id:
@@ -552,22 +171,13 @@ components:
           type: string
         icon:
           type: string
-    DetailedRecipeDto:
       required:
-      - averageRating
-      - categories
-      - cookTime
-      - createdAt
-      - headline
-      - id
-      - image
-      - ingredients
-      - instructions
-      - likes
-      - mealType
-      - preparationTime
-      - title
-      - userFullname
+        - description
+        - icon
+        - id
+        - title
+        - type
+    DetailedRecipeDto:
       type: object
       properties:
         id:
@@ -590,7 +200,7 @@ components:
         categories:
           type: array
           items:
-            $ref: "#/components/schemas/CategoryDto"
+            $ref: '#/components/schemas/CategoryDto'
         mealType:
           type: string
         averageRating:
@@ -600,20 +210,31 @@ components:
           type: integer
           format: int32
         image:
-          $ref: "#/components/schemas/ImageDto"
+          $ref: '#/components/schemas/ImageDto'
         instructions:
           type: array
           items:
-            $ref: "#/components/schemas/Instruction"
+            $ref: '#/components/schemas/Instruction'
         ingredients:
           type: array
           items:
-            $ref: "#/components/schemas/Ingredient"
-    ImageDto:
+            $ref: '#/components/schemas/Ingredient'
       required:
-      - id
-      - src
-      - title
+        - averageRating
+        - categories
+        - cookTime
+        - createdAt
+        - headline
+        - id
+        - image
+        - ingredients
+        - instructions
+        - likes
+        - mealType
+        - preparationTime
+        - title
+        - userFullname
+    ImageDto:
       type: object
       properties:
         id:
@@ -622,12 +243,11 @@ components:
           type: string
         title:
           type: string
-    Ingredient:
       required:
-      - amount
-      - name
-      - orderNo
-      - unit
+        - id
+        - src
+        - title
+    Ingredient:
       type: object
       properties:
         name:
@@ -640,6 +260,11 @@ components:
         orderNo:
           type: integer
           format: int32
+      required:
+        - amount
+        - name
+        - orderNo
+        - unit
     Instruction:
       type: object
       properties:
@@ -648,203 +273,6 @@ components:
           format: int32
         description:
           type: string
-    RecipeDto:
-      required:
-      - averageRating
-      - categories
-      - cookTime
-      - createdAt
-      - headline
-      - id
-      - image
-      - likes
-      - mealType
-      - preparationTime
-      - title
-      - userFullname
-      type: object
-      properties:
-        id:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        userFullname:
-          type: string
-        title:
-          type: string
-        headline:
-          type: string
-        preparationTime:
-          type: integer
-          format: int32
-        cookTime:
-          type: integer
-          format: int32
-        categories:
-          type: array
-          items:
-            $ref: "#/components/schemas/CategoryDto"
-        mealType:
-          type: string
-        averageRating:
-          type: number
-          format: double
-        likes:
-          type: integer
-          format: int32
-        image:
-          $ref: "#/components/schemas/ImageDto"
-    IncrementLikesResponse:
-      required:
-      - newLikes
-      - recipeId
-      type: object
-      properties:
-        recipeId:
-          type: string
-        newLikes:
-          type: integer
-          format: int32
-    PageResponseRecipeSummaryDto:
-      required:
-      - content
-      - hasNext
-      - hasPrevious
-      - pageNumber
-      - totalPages
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/RecipeSummaryDto"
-        pageNumber:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
-        hasNext:
-          type: boolean
-        hasPrevious:
-          type: boolean
-        meta:
-          type: string
-    RecipeSummaryDto:
-      required:
-      - id
-      - mealType
-      - title
-      type: object
-      properties:
-        id:
-          type: string
-        mealType:
-          type: string
-        title:
-          type: string
-    GetSearchDetailResponse:
-      required:
-      - recipe
-      type: object
-      properties:
-        recipe:
-          $ref: "#/components/schemas/RecipeDto"
-    PageResponseRecipeDto:
-      required:
-      - content
-      - hasNext
-      - hasPrevious
-      - pageNumber
-      - totalPages
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/RecipeDto"
-        pageNumber:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
-        hasNext:
-          type: boolean
-        hasPrevious:
-          type: boolean
-        meta:
-          type: string
-    GetRecipeResponse:
-      required:
-      - recipe
-      type: object
-      properties:
-        recipe:
-          $ref: "#/components/schemas/DetailedRecipeDto"
-    GetRecipeIngredientsResponse:
-      required:
-      - id
-      - ingredients
-      type: object
-      properties:
-        id:
-          type: string
-        ingredients:
-          type: array
-          items:
-            $ref: "#/components/schemas/Ingredient"
-    GetRecipeFeedbacksResponse:
-      required:
-      - feedbacks
-      type: object
-      properties:
-        feedbacks:
-          type: array
-          items:
-            $ref: "#/components/schemas/Feedback"
-    PageResponseFeedback:
-      required:
-      - content
-      - hasNext
-      - hasPrevious
-      - pageNumber
-      - totalPages
-      type: object
-      properties:
-        content:
-          type: array
-          items:
-            $ref: "#/components/schemas/Feedback"
-        pageNumber:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
-        hasNext:
-          type: boolean
-        hasPrevious:
-          type: boolean
-        meta:
-          type: string
-    ExploreRecipeDto:
-      required:
-      - id
-      - image
-      - mealType
-      - title
-      type: object
-      properties:
-        id:
-          type: string
-        title:
-          type: string
-        mealType:
-          type: string
-        image:
-          $ref: "#/components/schemas/ImageDto"
     MealTypeDto:
       type: object
       properties:
@@ -853,9 +281,12 @@ components:
         name:
           type: string
     MeDto:
-      required:
-      - fullname
       type: object
       properties:
         fullname:
           type: string
+      required:
+        - fullname
+tags:
+  - name: Admin
+    description: Admin Endpoints

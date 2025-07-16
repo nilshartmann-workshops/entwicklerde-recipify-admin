@@ -3,8 +3,9 @@
  * Do not edit manually.
  */
 
-import { MealTypeDto } from './MealTypeDto'
 import { z } from 'zod/v4'
+
+import { MealTypeDto } from './MealTypeDto'
 
 /**
  * @description OK

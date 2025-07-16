@@ -3,11 +3,14 @@
  * Do not edit manually.
  */
 
-import { CategoryDto } from './CategoryDto'
-import { ImageDto } from './ImageDto'
 import { z } from 'zod/v4'
 
-export const RecipeDto = z.object({
+import { CategoryDto } from './CategoryDto'
+import { ImageDto } from './ImageDto'
+import { Ingredient } from './Ingredient'
+import { Instruction } from './Instruction'
+
+export const DetailedRecipeDto = z.object({
   id: z.string(),
   createdAt: z.iso.datetime({ local: true }),
   userFullname: z.string(),
@@ -24,6 +27,12 @@ export const RecipeDto = z.object({
   get image() {
     return ImageDto
   },
+  get instructions() {
+    return z.array(Instruction)
+  },
+  get ingredients() {
+    return z.array(Ingredient)
+  },
 })
 
-export type RecipeDto = z.infer<typeof RecipeDto>
+export type DetailedRecipeDto = z.infer<typeof DetailedRecipeDto>

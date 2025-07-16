@@ -3,9 +3,10 @@
  * Do not edit manually.
  */
 
+import { z } from 'zod/v4'
+
 import { CreateRecipeRequest } from './CreateRecipeRequest'
 import { DetailedRecipeDto } from './DetailedRecipeDto'
-import { z } from 'zod/v4'
 
 /**
  * @description OK

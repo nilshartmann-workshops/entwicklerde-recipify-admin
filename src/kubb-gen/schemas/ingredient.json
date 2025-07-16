@@ -1,1 +1,0 @@
-{"required":["amount","name","orderNo","unit"],"type":"object","properties":{"name":{"type":"string"},"amount":{"type":"number","format":"double"},"unit":{"type":"string"},"orderNo":{"type":"integer","format":"int32"}},"x-readme-ref-name":"Ingredient"}

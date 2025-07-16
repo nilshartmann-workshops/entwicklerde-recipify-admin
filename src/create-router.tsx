@@ -6,7 +6,7 @@ import { routeTree } from "./routeTree.gen.ts";
 export const queryClient = createQueryClient();
 
 // Create a new router instance
-export const router = createRouter({
+export const recipifyRouter = createRouter({
   routeTree,
   context: {
     queryClient,
@@ -16,6 +16,6 @@ export const router = createRouter({
 // Register the router instance for type safety
 declare module "@tanstack/react-router" {
   interface Register {
-    router: typeof router;
+    router: typeof recipifyRouter;
   }
 }
