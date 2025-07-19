@@ -5,17 +5,17 @@
 
 import { z } from 'zod/v4'
 
-import { CreateRecipeRequest } from './CreateRecipeRequest'
-import { DetailedRecipeDto } from './DetailedRecipeDto'
+import { AdminRecipeDto } from './AdminRecipeDto'
+import { RecipeRequest } from './RecipeRequest'
 
 /**
  * @description OK
  */
-export const CreateRecipe200 = DetailedRecipeDto
+export const CreateRecipe200 = AdminRecipeDto
 
 export type CreateRecipe200 = z.infer<typeof CreateRecipe200>
 
-export const CreateRecipeMutationRequest = CreateRecipeRequest
+export const CreateRecipeMutationRequest = RecipeRequest
 
 export type CreateRecipeMutationRequest = z.infer<typeof CreateRecipeMutationRequest>
 

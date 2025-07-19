@@ -6,11 +6,11 @@
 import { z } from 'zod/v4'
 
 export const CategoryDto = z.object({
-  id: z.string(),
-  type: z.string(),
-  title: z.string(),
   description: z.string(),
   icon: z.string(),
+  id: z.string(),
+  title: z.string(),
+  type: z.string(),
 })
 
 export type CategoryDto = z.infer<typeof CategoryDto>

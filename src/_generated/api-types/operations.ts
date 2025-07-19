@@ -4,27 +4,27 @@
  */
 
 import { CreateRecipe200, CreateRecipeMutationRequest, CreateRecipeMutationResponse } from './CreateRecipe'
+import { DeleteFeedback200, DeleteFeedbackMutationResponse, DeleteFeedbackPathParams, DeleteFeedbackQueryParams } from './DeleteFeedback'
+import { GetAllImages200, GetAllImagesQueryResponse } from './GetAllImages'
 import { GetCategories200, GetCategoriesQueryResponse } from './GetCategories'
-import { GetImages200, GetImagesQueryResponse } from './GetImages'
+import { GetFeedbackDashboardList200, GetFeedbackDashboardListQueryParams,GetFeedbackDashboardListQueryResponse } from './GetFeedbackDashboardList'
+import { GetImageById200, GetImageByIdPathParams,GetImageByIdQueryResponse } from './GetImageById'
 import { GetMe200, GetMeQueryResponse } from './GetMe'
 import { GetMealTypes200, GetMealTypesQueryResponse } from './GetMealTypes'
+import { GetRecipe200, GetRecipePathParams,GetRecipeQueryResponse } from './GetRecipe'
+import { GetRecipeDashboardList200, GetRecipeDashboardListQueryParams,GetRecipeDashboardListQueryResponse } from './GetRecipeDashboardList'
+import {
+  SetFeedbackApprovalStatus200,
+  SetFeedbackApprovalStatusMutationRequest,
+  SetFeedbackApprovalStatusMutationResponse,
+  SetFeedbackApprovalStatusPathParams,
+  SetFeedbackApprovalStatusQueryParams,
+} from './SetFeedbackApprovalStatus'
+import { UpdateRecipe200, UpdateRecipeMutationRequest, UpdateRecipeMutationResponse, UpdateRecipePathParams } from './UpdateRecipe'
 import { UploadImage200, UploadImageMutationRequest, UploadImageMutationResponse } from './UploadImage'
 
 export const operations = {
-  createRecipe: {
-    request: CreateRecipeMutationRequest,
-    parameters: {
-      path: undefined,
-      query: undefined,
-      header: undefined,
-    },
-    responses: {
-      200: CreateRecipe200,
-      default: CreateRecipeMutationResponse,
-    },
-    errors: {},
-  },
-  getImages: {
+  getCategories: {
     request: undefined,
     parameters: {
       path: undefined,
@@ -32,8 +32,60 @@ export const operations = {
       header: undefined,
     },
     responses: {
-      200: GetImages200,
-      default: GetImagesQueryResponse,
+      200: GetCategories200,
+      default: GetCategoriesQueryResponse,
+    },
+    errors: {},
+  },
+  getFeedbackDashboardList: {
+    request: undefined,
+    parameters: {
+      path: undefined,
+      query: GetFeedbackDashboardListQueryParams,
+      header: undefined,
+    },
+    responses: {
+      200: GetFeedbackDashboardList200,
+      default: GetFeedbackDashboardListQueryResponse,
+    },
+    errors: {},
+  },
+  deleteFeedback: {
+    request: undefined,
+    parameters: {
+      path: DeleteFeedbackPathParams,
+      query: DeleteFeedbackQueryParams,
+      header: undefined,
+    },
+    responses: {
+      200: DeleteFeedback200,
+      default: DeleteFeedbackMutationResponse,
+    },
+    errors: {},
+  },
+  setFeedbackApprovalStatus: {
+    request: SetFeedbackApprovalStatusMutationRequest,
+    parameters: {
+      path: SetFeedbackApprovalStatusPathParams,
+      query: SetFeedbackApprovalStatusQueryParams,
+      header: undefined,
+    },
+    responses: {
+      200: SetFeedbackApprovalStatus200,
+      default: SetFeedbackApprovalStatusMutationResponse,
+    },
+    errors: {},
+  },
+  getAllImages: {
+    request: undefined,
+    parameters: {
+      path: undefined,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: GetAllImages200,
+      default: GetAllImagesQueryResponse,
     },
     errors: {},
   },
@@ -50,16 +102,16 @@ export const operations = {
     },
     errors: {},
   },
-  getMealTypes: {
+  getImageById: {
     request: undefined,
     parameters: {
-      path: undefined,
+      path: GetImageByIdPathParams,
       query: undefined,
       header: undefined,
     },
     responses: {
-      200: GetMealTypes200,
-      default: GetMealTypesQueryResponse,
+      200: GetImageById200,
+      default: GetImageByIdQueryResponse,
     },
     errors: {},
   },
@@ -76,7 +128,7 @@ export const operations = {
     },
     errors: {},
   },
-  getCategories: {
+  getMealTypes: {
     request: undefined,
     parameters: {
       path: undefined,
@@ -84,28 +136,99 @@ export const operations = {
       header: undefined,
     },
     responses: {
-      200: GetCategories200,
-      default: GetCategoriesQueryResponse,
+      200: GetMealTypes200,
+      default: GetMealTypesQueryResponse,
+    },
+    errors: {},
+  },
+  getRecipeDashboardList: {
+    request: undefined,
+    parameters: {
+      path: undefined,
+      query: GetRecipeDashboardListQueryParams,
+      header: undefined,
+    },
+    responses: {
+      200: GetRecipeDashboardList200,
+      default: GetRecipeDashboardListQueryResponse,
+    },
+    errors: {},
+  },
+  createRecipe: {
+    request: CreateRecipeMutationRequest,
+    parameters: {
+      path: undefined,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: CreateRecipe200,
+      default: CreateRecipeMutationResponse,
+    },
+    errors: {},
+  },
+  getRecipe: {
+    request: undefined,
+    parameters: {
+      path: GetRecipePathParams,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: GetRecipe200,
+      default: GetRecipeQueryResponse,
+    },
+    errors: {},
+  },
+  updateRecipe: {
+    request: UpdateRecipeMutationRequest,
+    parameters: {
+      path: UpdateRecipePathParams,
+      query: undefined,
+      header: undefined,
+    },
+    responses: {
+      200: UpdateRecipe200,
+      default: UpdateRecipeMutationResponse,
     },
     errors: {},
   },
 } as const
 
 export const paths = {
-  '/api/admin/recipe': {
-    post: operations['createRecipe'],
+  '/api/admin/categories': {
+    get: operations['getCategories'],
+  },
+  '/api/admin/feedback-dashboard-list': {
+    get: operations['getFeedbackDashboardList'],
+  },
+  '/api/admin/feedback/{feedbackId}': {
+    delete: operations['deleteFeedback'],
+  },
+  '/api/admin/feedback/{feedbackId}/approval-status': {
+    patch: operations['setFeedbackApprovalStatus'],
   },
   '/api/admin/images': {
-    get: operations['getImages'],
+    get: operations['getAllImages'],
     post: operations['uploadImage'],
   },
-  '/api/admin/meal-types': {
-    get: operations['getMealTypes'],
+  '/api/admin/images/{imageId}': {
+    get: operations['getImageById'],
   },
   '/api/admin/me': {
     get: operations['getMe'],
   },
-  '/api/admin/categories': {
-    get: operations['getCategories'],
+  '/api/admin/meal-types': {
+    get: operations['getMealTypes'],
+  },
+  '/api/admin/recipe-dashboard-list': {
+    get: operations['getRecipeDashboardList'],
+  },
+  '/api/admin/recipes': {
+    post: operations['createRecipe'],
+  },
+  '/api/admin/recipes/{recipeId}': {
+    get: operations['getRecipe'],
+    put: operations['updateRecipe'],
   },
 } as const

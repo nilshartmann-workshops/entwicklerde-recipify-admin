@@ -12,9 +12,9 @@ import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { z } from "zod/v4";
 
 import {
+  AdminRecipeDto,
   CategoryDto,
   type CreateRecipeMutationRequest,
-  CreateRecipeMutationResponse,
   ImageDto,
   MealTypeDto,
 } from "../_generated";
@@ -30,7 +30,7 @@ const RecipeFormSchema = z.object({
   categoryIds: z.string().array().min(1),
   instructions: z
     .object({
-      value: z.string().nonempty(),
+      description: z.string().nonempty(),
     })
     .array(),
   ingredients: z
@@ -53,27 +53,12 @@ const RecipeFormSchema = z.object({
 
 type RecipeFormState = z.infer<typeof RecipeFormSchema>;
 
-export default function RecipeForm() {
-  // const { data: categories } = useSuspenseQuery({
-  //   queryKey: ["admin", "categories"],
-  //   async queryFn() {
-  //     const response = await ky
-  //       .get("http://localhost:8080/api/admin/categories")
-  //       .json();
-  //     return CategoryDto.array().parse(response);
-  //   },
-  // });
-  //
-  // const { data: mealtypes } = useSuspenseQuery({
-  //   queryKey: ["admin", "mealtypes"],
-  //   async queryFn() {
-  //     const response = await ky
-  //       .get("http://localhost:8080/api/admin/meal-types")
-  //       .json();
-  //     return MealTypeDto.array().parse(response);
-  //   },
-  // });
+type RecipeFormProps = {
+  existingRecipe?: AdminRecipeDto;
+};
 
+export default function RecipeForm({ existingRecipe }: RecipeFormProps) {
+  console.log("existingR", existingRecipe);
   const [{ data: mealtypes }, { data: categories }] = useSuspenseQueries({
     queries: [
       {
@@ -95,28 +80,44 @@ export default function RecipeForm() {
 
   const mutation = useMutation({
     async mutationFn(data: CreateRecipeMutationRequest) {
-      const response = await ky
-        .post("/api/admin/recipe", {
-          json: data,
-        })
-        .json();
-      return CreateRecipeMutationResponse.parse(response);
+      let response = null;
+
+      if (existingRecipe) {
+        // UPDATE
+        response = await ky
+          .put("/api/admin/recipes/" + existingRecipe.id, {
+            json: data,
+          })
+          .json();
+      } else {
+        response = await ky
+          .post("/api/admin/recipes", {
+            json: data,
+          })
+          .json();
+      }
+
+      return AdminRecipeDto.parse(response);
     },
   });
 
   const form = useForm({
     resolver: zodResolver(RecipeFormSchema),
-    defaultValues: {
-      categoryIds: [],
-      ingredients: [
-        {
-          amount: 0,
-          unit: "",
-          name: "",
+    defaultValues: existingRecipe
+      ? {
+          ...existingRecipe,
+        }
+      : {
+          categoryIds: [],
+          ingredients: [
+            {
+              amount: 0,
+              unit: "",
+              name: "",
+            },
+          ],
+          instructions: [{ description: "" }],
         },
-      ],
-      instructions: [{ value: "" }],
-    },
   });
 
   const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
@@ -140,12 +141,9 @@ export default function RecipeForm() {
   const handleSubmit = async (data: RecipeFormState) => {
     console.log("SAVE - data", data);
 
-    // const fileBase64 = await fileToBase64(data.imageId);
-    //
     mutation.mutate({
       ...data,
       imageId: data.image.id,
-      instructions: data.instructions.map((i) => i.value),
     });
   };
 
@@ -378,7 +376,9 @@ export default function RecipeForm() {
                             </div>
                             <div className={"Step"}>Step {index + 1}</div>
                             <input
-                              {...form.register(`instructions.${index}.value`)}
+                              {...form.register(
+                                `instructions.${index}.description`,
+                              )}
                             />
                             <div className={"Buttons"}>
                               <button
@@ -386,7 +386,7 @@ export default function RecipeForm() {
                                 className={"primary"}
                                 onClick={() => {
                                   instructions.insert(index + 1, {
-                                    value: "",
+                                    description: "",
                                   });
                                 }}
                               >
@@ -409,7 +409,7 @@ export default function RecipeForm() {
                               <ErrorMessage>
                                 {
                                   form.formState.errors.instructions?.[index]
-                                    ?.value?.message
+                                    ?.description?.message
                                 }
                               </ErrorMessage>
                             </div>
@@ -517,6 +517,7 @@ function CategorySelector({
 type ErrorMessageProps = {
   children: ReactNode;
 };
+
 function ErrorMessage({ children }: ErrorMessageProps) {
   if (!children) {
     return;

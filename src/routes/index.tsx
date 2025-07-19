@@ -1,31 +1,15 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-
-import type { ImageDto } from "../_generated";
-import ImageSelectorDialog from "../components/ImageSelectorDialog.tsx";
+import { createFileRoute, Link } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
-  component: Demo,
+  component: LandingPage,
 });
 
-function Demo() {
-  const [selectedImageId, setSelectedImageId] = useState<ImageDto | undefined>(
-    undefined,
-  );
-
+function LandingPage() {
   return (
-    <div>
-      <ImageSelectorDialog
-        open={true}
-        selectedImage={selectedImageId}
-        onImageSelected={(i) => setSelectedImageId(i)}
-      />
-      {/*<RecipeForm />*/}
-      {/*<ImageSelector*/}
-      {/*  allImages={demoImages}*/}
-      {/*  selectedImage={selectedImageId}*/}
-      {/*  onImageSelected={(imageId) => setSelectedImageId(imageId)}*/}
-      {/*/>*/}
+    <div className={"LandingPage"}>
+      <h1>Recipify</h1>
+      <h2>Administration tool</h2>
+      <Link to={"/admin"}>Start</Link>
     </div>
   );
 }

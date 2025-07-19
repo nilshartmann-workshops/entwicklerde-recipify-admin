@@ -7,8 +7,8 @@ import { z } from 'zod/v4'
 
 export const IngredientRequest = z.object({
   amount: z.number(),
-  unit: z.string(),
   name: z.string(),
+  unit: z.string(),
 })
 
 export type IngredientRequest = z.infer<typeof IngredientRequest>

@@ -5,11 +5,10 @@
 
 import { z } from 'zod/v4'
 
-export const Ingredient = z.object({
-  name: z.string(),
+export const IngredientDto = z.object({
   amount: z.number(),
+  name: z.string(),
   unit: z.string(),
-  orderNo: z.int(),
 })
 
-export type Ingredient = z.infer<typeof Ingredient>
+export type IngredientDto = z.infer<typeof IngredientDto>

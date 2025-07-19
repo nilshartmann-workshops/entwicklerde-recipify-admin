@@ -17,9 +17,10 @@ async function formatOpenApi() {
       `openapi-format ${apiDocsFull} -o ${apiDocsFiltered} -f api-docs-filter.json`,
     );
     if (stderr) {
-      console.error(`stderr: ${stderr}`);
+      console.error(`stderr: '${stderr}'`);
     }
     console.log(`stdout: ${stdout}`);
+    console.log("✅ api docs formatted");
   } catch (error) {
     console.error(
       `Could not format document: ${error instanceof Error ? error.message : String(error)}`,
@@ -36,15 +37,14 @@ async function downloadFile() {
   }
 
   const data = await response.arrayBuffer();
-  await writeFile(apiDocsFiltered, Buffer.from(data));
+  await writeFile(apiDocsFull, Buffer.from(data));
 
-  await formatOpenApi();
-
-  console.log("✅ api docs downloaded and formatted succesfully");
+  console.log("✅ api docs downloaded");
 }
 
 export default defineConfig(async () => {
   await downloadFile();
+  await formatOpenApi();
 
   return {
     name: "recipify",

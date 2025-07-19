@@ -73,20 +73,43 @@
   @apply container mx-auto mt-8;
 }
 
-.RootComponent > header {
+.LandingPage {
+  @apply flex min-h-svh min-w-screen flex-grow flex-col items-center justify-start gap-y-8 bg-cover pt-32;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0)),
+    url("/assets/images/landing-page.png");
+}
+
+.LandingPage h1 {
+  @apply font-space text-red mx-auto inline-block max-w-4xl bg-white p-4 text-center text-8xl font-bold;
+}
+
+.LandingPage h2 {
+  @apply mt-10 inline-block max-w-4xl bg-white p-2 pb-3 text-4xl font-bold text-gray-800;
+}
+
+.LandingPage a {
+  @apply border-red bg-red hover:border-red hover:bg-orange_2 hover:shadow-red font-barlow mt-48 mb-2 inline-flex transform items-center justify-center rounded border-2 p-4 text-2xl font-normal text-white transition-all duration-500 ease-in-out hover:cursor-pointer hover:underline hover:shadow-2xl;
+}
+
+.AdminLayout > header {
   @apply mt-16 flex h-24 items-center bg-[url(/assets/images/landing-page.png)] bg-cover bg-center;
 }
 
-.RootComponent > header nav {
+.AdminLayout > header nav {
   @apply container mx-auto;
 }
 
-.RootComponent > header nav a {
+.AdminLayout > header nav a {
   @apply font-space text-red inline-block items-center bg-white p-2 pb-3 text-4xl font-bold hover:underline;
 }
 
-.RootComponent main {
+.AdminLayout main {
   @apply container mx-auto mt-8;
+}
+
+.Dashboard a {
+  @apply text-orange_2-500 cursor-pointer font-medium hover:text-[#B46918] hover:underline;
 }
 
 form {
@@ -109,6 +132,7 @@ form .ButtonBar {
   @apply flex items-center gap-x-8 border-t border-dotted border-t-gray-300 pt-8;
 }
 
+.Dashboard a.Action,
 form .ButtonBar button.primary {
   @apply border-green bg-green me-2 flex w-fit cursor-pointer rounded border px-4 py-2 text-2xl text-white hover:border-[#4B792A] hover:bg-[#4B792A];
 }
@@ -236,8 +260,22 @@ input {
   @apply font-bold text-green-500;
 }
 
+.Dashboard nav a,
 form button[type="button"].primary {
-  @apply bg-orange_2-500/90 hover:bg-orange_2-500 flex w-fit cursor-pointer items-center gap-x-2 rounded px-2 py-1 text-white;
+  @apply bg-orange_2-500/90 flex w-fit cursor-pointer items-center gap-x-2 rounded px-2 py-1 text-white hover:bg-[#B46918];
+}
+
+.Dashboard nav a:not([href]),
+form button[type="button"].primary:disabled {
+  @apply flex w-fit cursor-default items-center gap-x-2 rounded bg-gray-400 px-2 py-1 text-white hover:bg-gray-400;
+}
+
+.Dashboard .Actions {
+  @apply flex flex-col gap-y-2;
+}
+
+.Dashboard .Actions button {
+  @apply bg-orange_2-500/90 flex w-fit cursor-pointer items-center gap-x-2 rounded px-2 py-1 text-nowrap text-white hover:bg-[#B46918];
 }
 
 form button[type="button"].secondary {
@@ -269,7 +307,7 @@ form .error {
 }
 
 .Dialog .DialogPanel {
-  @apply w-1/2 space-y-4 rounded-lg bg-white p-12 shadow-2xl;
+  @apply w-1/3 space-y-4 rounded-lg bg-white p-12 shadow-2xl;
 }
 
 .Dialog .DialogTitle {
@@ -329,6 +367,32 @@ form .error {
 
 .CategorySelector section {
   @apply flex items-center gap-x-2;
+}
+
+.Dashboard {
+  @apply space-y-12;
+}
+
+.Dashboard h2 {
+  @apply font-space mb-4 text-3xl font-bold;
+}
+
+.Dashboard table,
+.Dashboard table tbody {
+  @apply divide-y divide-dotted divide-gray-500;
+}
+
+.Dashboard table th,
+.Dashboard table td {
+  @apply px-4 py-4 text-left align-top;
+}
+
+.Dashboard table .right {
+  @apply text-right;
+}
+
+.Dashboard nav {
+  @apply mt-8 flex items-center justify-center gap-x-8;
 }
 
 /*

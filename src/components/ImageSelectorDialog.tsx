@@ -26,7 +26,7 @@ export default function ImageSelectorDialog({
   selectedImage,
   onImageSelected,
 }: ImageSelectorDialogProps) {
-  const [tab, setTab] = useState<"select" | "create">("select");
+  const [tab, setTab] = useState<"select" | "upload">("select");
   // Aufgaben:
   //  - Anzeige des Selectors in einem Dialog
   //  - Laden der Bilder
@@ -42,11 +42,11 @@ export default function ImageSelectorDialog({
               <div>Select image</div>
               <div className={"Tabs"}>
                 <button onClick={() => setTab("select")}>Select</button>
-                <button onClick={() => setTab("create")}>Create</button>
+                <button onClick={() => setTab("upload")}>Upload</button>
               </div>
             </DialogTitle>
             <div className={"DialogContent"}>
-              {tab === "create" && <UploadImageForm />}
+              {tab === "upload" && <UploadImageForm />}
               {tab === "select" && (
                 <ImageSelectorDialogContent
                   onImageSelected={onImageSelected}
