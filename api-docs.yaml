@@ -9,6 +9,13 @@ paths:
   /api/admin/categories:
     get:
       operationId: getCategories
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK
@@ -106,6 +113,13 @@ paths:
   /api/admin/images:
     get:
       operationId: getAllImages
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK
@@ -153,6 +167,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK
@@ -165,6 +185,13 @@ paths:
   /api/admin/me:
     get:
       operationId: getMe
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK
@@ -177,6 +204,13 @@ paths:
   /api/admin/meal-types:
     get:
       operationId: getMealTypes
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK
@@ -222,6 +256,13 @@ paths:
   /api/admin/recipes:
     post:
       operationId: createRecipe
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -247,6 +288,12 @@ paths:
           schema:
             type: integer
             format: int64
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       responses:
         '200':
           description: OK
@@ -264,6 +311,12 @@ paths:
           required: true
           schema:
             type: string
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
       requestBody:
         required: true
         content:
@@ -279,6 +332,36 @@ paths:
                 $ref: '#/components/schemas/AdminRecipeDto'
       tags:
         - Admin
+  /api/login:
+    post:
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+      tags:
+        - Login
+  /api/logout:
+    post:
+      operationId: logout
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+      tags:
+        - Login
 components:
   schemas:
     AdminFeedbackDto:
@@ -451,6 +534,21 @@ components:
           type: string
       required:
         - description
+    LoginRequest:
+      type: object
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+      required:
+        - password
+        - username
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
     MeDto:
       type: object
       properties:
@@ -574,3 +672,5 @@ components:
 tags:
   - description: Admin Endpoints
     name: Admin
+  - description: Login/Logout Endpoints
+    name: Login

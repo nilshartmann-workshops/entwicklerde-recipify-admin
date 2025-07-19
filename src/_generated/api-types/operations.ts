@@ -3,15 +3,15 @@
  * Do not edit manually.
  */
 
-import { CreateRecipe200, CreateRecipeMutationRequest, CreateRecipeMutationResponse } from './CreateRecipe'
+import { CreateRecipe200, CreateRecipeMutationRequest, CreateRecipeMutationResponse, CreateRecipeQueryParams } from './CreateRecipe'
 import { DeleteFeedback200, DeleteFeedbackMutationResponse, DeleteFeedbackPathParams, DeleteFeedbackQueryParams } from './DeleteFeedback'
-import { GetAllImages200, GetAllImagesQueryResponse } from './GetAllImages'
-import { GetCategories200, GetCategoriesQueryResponse } from './GetCategories'
+import { GetAllImages200, GetAllImagesQueryParams,GetAllImagesQueryResponse } from './GetAllImages'
+import { GetCategories200, GetCategoriesQueryParams,GetCategoriesQueryResponse } from './GetCategories'
 import { GetFeedbackDashboardList200, GetFeedbackDashboardListQueryParams,GetFeedbackDashboardListQueryResponse } from './GetFeedbackDashboardList'
-import { GetImageById200, GetImageByIdPathParams,GetImageByIdQueryResponse } from './GetImageById'
-import { GetMe200, GetMeQueryResponse } from './GetMe'
-import { GetMealTypes200, GetMealTypesQueryResponse } from './GetMealTypes'
-import { GetRecipe200, GetRecipePathParams,GetRecipeQueryResponse } from './GetRecipe'
+import { GetImageById200, GetImageByIdPathParams, GetImageByIdQueryParams,GetImageByIdQueryResponse } from './GetImageById'
+import { GetMe200, GetMeQueryParams,GetMeQueryResponse } from './GetMe'
+import { GetMealTypes200, GetMealTypesQueryParams,GetMealTypesQueryResponse } from './GetMealTypes'
+import { GetRecipe200, GetRecipePathParams, GetRecipeQueryParams,GetRecipeQueryResponse } from './GetRecipe'
 import { GetRecipeDashboardList200, GetRecipeDashboardListQueryParams,GetRecipeDashboardListQueryResponse } from './GetRecipeDashboardList'
 import {
   SetFeedbackApprovalStatus200,
@@ -20,7 +20,7 @@ import {
   SetFeedbackApprovalStatusPathParams,
   SetFeedbackApprovalStatusQueryParams,
 } from './SetFeedbackApprovalStatus'
-import { UpdateRecipe200, UpdateRecipeMutationRequest, UpdateRecipeMutationResponse, UpdateRecipePathParams } from './UpdateRecipe'
+import { UpdateRecipe200, UpdateRecipeMutationRequest, UpdateRecipeMutationResponse, UpdateRecipePathParams, UpdateRecipeQueryParams } from './UpdateRecipe'
 import { UploadImage200, UploadImageMutationRequest, UploadImageMutationResponse } from './UploadImage'
 
 export const operations = {
@@ -28,7 +28,7 @@ export const operations = {
     request: undefined,
     parameters: {
       path: undefined,
-      query: undefined,
+      query: GetCategoriesQueryParams,
       header: undefined,
     },
     responses: {
@@ -80,7 +80,7 @@ export const operations = {
     request: undefined,
     parameters: {
       path: undefined,
-      query: undefined,
+      query: GetAllImagesQueryParams,
       header: undefined,
     },
     responses: {
@@ -106,7 +106,7 @@ export const operations = {
     request: undefined,
     parameters: {
       path: GetImageByIdPathParams,
-      query: undefined,
+      query: GetImageByIdQueryParams,
       header: undefined,
     },
     responses: {
@@ -119,7 +119,7 @@ export const operations = {
     request: undefined,
     parameters: {
       path: undefined,
-      query: undefined,
+      query: GetMeQueryParams,
       header: undefined,
     },
     responses: {
@@ -132,7 +132,7 @@ export const operations = {
     request: undefined,
     parameters: {
       path: undefined,
-      query: undefined,
+      query: GetMealTypesQueryParams,
       header: undefined,
     },
     responses: {
@@ -158,7 +158,7 @@ export const operations = {
     request: CreateRecipeMutationRequest,
     parameters: {
       path: undefined,
-      query: undefined,
+      query: CreateRecipeQueryParams,
       header: undefined,
     },
     responses: {
@@ -171,7 +171,7 @@ export const operations = {
     request: undefined,
     parameters: {
       path: GetRecipePathParams,
-      query: undefined,
+      query: GetRecipeQueryParams,
       header: undefined,
     },
     responses: {
@@ -184,7 +184,7 @@ export const operations = {
     request: UpdateRecipeMutationRequest,
     parameters: {
       path: UpdateRecipePathParams,
-      query: undefined,
+      query: UpdateRecipeQueryParams,
       header: undefined,
     },
     responses: {

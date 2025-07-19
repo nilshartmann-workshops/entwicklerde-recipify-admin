@@ -1,6 +1,4 @@
-import type { CategoryDto } from "./kubb-gen";
-
-export function getAllCategories(): CategoryDto[] {
+export function getAllCategories() {
   return [
     {
       id: "6",

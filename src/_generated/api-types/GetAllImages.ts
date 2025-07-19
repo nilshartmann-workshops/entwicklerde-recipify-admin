@@ -7,6 +7,14 @@ import { z } from 'zod/v4'
 
 import { ImageDto } from './ImageDto'
 
+export const GetAllImagesQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type GetAllImagesQueryParams = z.infer<typeof GetAllImagesQueryParams>
+
 /**
  * @description OK
  */

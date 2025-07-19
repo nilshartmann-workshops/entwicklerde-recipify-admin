@@ -8,6 +8,14 @@ import { z } from 'zod/v4'
 import { AdminRecipeDto } from './AdminRecipeDto'
 import { RecipeRequest } from './RecipeRequest'
 
+export const CreateRecipeQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type CreateRecipeQueryParams = z.infer<typeof CreateRecipeQueryParams>
+
 /**
  * @description OK
  */

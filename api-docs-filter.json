@@ -1,4 +1,4 @@
 {
-  "inverseTags": ["Admin"],
+  "inverseTags": ["Admin", "Login"],
   "unusedComponents": ["schemas"]
 }

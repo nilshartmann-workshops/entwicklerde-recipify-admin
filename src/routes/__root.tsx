@@ -1,5 +1,6 @@
+import type { QueryClient } from "@tanstack/react-query";
 import {
-  createRootRoute,
+  createRootRouteWithContext,
   Outlet,
   retainSearchParams,
 } from "@tanstack/react-router";
@@ -10,7 +11,11 @@ const QueryParamsSchema = z.object({
   recipesDashboardPage: z.number().optional(),
 });
 
-export const Route = createRootRoute({
+type RecipifyRouterContext = {
+  queryClient: QueryClient;
+};
+
+export const Route = createRootRouteWithContext<RecipifyRouterContext>()({
   component: RootComponent,
   validateSearch: zodValidator(QueryParamsSchema),
   search: {

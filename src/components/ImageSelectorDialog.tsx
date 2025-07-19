@@ -41,8 +41,12 @@ export default function ImageSelectorDialog({
             <DialogTitle className="DialogTitle">
               <div>Select image</div>
               <div className={"Tabs"}>
-                <button onClick={() => setTab("select")}>Select</button>
-                <button onClick={() => setTab("upload")}>Upload</button>
+                <button type="button" onClick={() => setTab("select")}>
+                  Select
+                </button>
+                <button type="button" onClick={() => setTab("upload")}>
+                  Upload
+                </button>
               </div>
             </DialogTitle>
             <div className={"DialogContent"}>

@@ -7,6 +7,14 @@ import { z } from 'zod/v4'
 
 import { MealTypeDto } from './MealTypeDto'
 
+export const GetMealTypesQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type GetMealTypesQueryParams = z.infer<typeof GetMealTypesQueryParams>
+
 /**
  * @description OK
  */

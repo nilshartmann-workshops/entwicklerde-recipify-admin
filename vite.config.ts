@@ -7,7 +7,16 @@ import { defineConfig } from "vite";
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tanstackRouter(), tailwindcss(), react()],
+  plugins: [
+    tanstackRouter({
+      // siehe Build-ausgabe:
+      //  ohne code-splitting: Warnung, großes Bundle
+      //  mit Code-Splitting: keine Warnung, viele kleine Bundles
+      // autoCodeSplitting: true,
+    }),
+    tailwindcss(),
+    react(),
+  ],
   server: {
     proxy: {
       "/api": {

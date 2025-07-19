@@ -9,12 +9,18 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AdminCreateRouteImport } from './routes/admin/create'
 import { Route as AdminRecipeIdIndexRouteImport } from './routes/admin/$recipeId/index'
 
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminRouteRoute = AdminRouteRouteImport.update({
   id: '/admin',
   path: '/admin',
@@ -44,12 +50,14 @@ const AdminRecipeIdIndexRoute = AdminRecipeIdIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/login': typeof LoginRoute
   '/admin/create': typeof AdminCreateRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/$recipeId': typeof AdminRecipeIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/login': typeof LoginRoute
   '/admin/create': typeof AdminCreateRoute
   '/admin': typeof AdminIndexRoute
   '/admin/$recipeId': typeof AdminRecipeIdIndexRoute
@@ -58,19 +66,27 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteRouteWithChildren
+  '/login': typeof LoginRoute
   '/admin/create': typeof AdminCreateRoute
   '/admin/': typeof AdminIndexRoute
   '/admin/$recipeId/': typeof AdminRecipeIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/admin/create' | '/admin/' | '/admin/$recipeId'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/login'
+    | '/admin/create'
+    | '/admin/'
+    | '/admin/$recipeId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin/create' | '/admin' | '/admin/$recipeId'
+  to: '/' | '/login' | '/admin/create' | '/admin' | '/admin/$recipeId'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/login'
     | '/admin/create'
     | '/admin/'
     | '/admin/$recipeId/'
@@ -79,10 +95,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  LoginRoute: typeof LoginRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin': {
       id: '/admin'
       path: '/admin'
@@ -140,6 +164,7 @@ const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRouteRoute: AdminRouteRouteWithChildren,
+  LoginRoute: LoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

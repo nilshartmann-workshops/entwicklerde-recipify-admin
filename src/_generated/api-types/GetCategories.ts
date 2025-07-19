@@ -7,6 +7,14 @@ import { z } from 'zod/v4'
 
 import { CategoryDto } from './CategoryDto'
 
+export const GetCategoriesQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type GetCategoriesQueryParams = z.infer<typeof GetCategoriesQueryParams>
+
 /**
  * @description OK
  */

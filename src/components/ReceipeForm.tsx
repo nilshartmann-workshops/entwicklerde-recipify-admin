@@ -6,6 +6,7 @@ import {
 } from "@hello-pangea/dnd";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQueries } from "@tanstack/react-query";
+import { useBlocker } from "@tanstack/react-router";
 import ky from "ky";
 import { type ReactNode, useState } from "react";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
@@ -122,6 +123,16 @@ export default function RecipeForm({ existingRecipe }: RecipeFormProps) {
 
   const [isImageSelectorOpen, setIsImageSelectorOpen] = useState(false);
 
+  // https://tanstack.com/router/v1/docs/framework/react/guide/navigation-blocking
+  useBlocker({
+    shouldBlockFn: () => {
+      if (form.formState.isDirty) return false;
+
+      const shouldLeave = confirm("Are you sure you want to leave?");
+      return !shouldLeave;
+    },
+  });
+
   const ingredients = useFieldArray({
     control: form.control,
     name: "ingredients",
@@ -152,7 +163,6 @@ export default function RecipeForm({ existingRecipe }: RecipeFormProps) {
   };
 
   const image = form.watch("image");
-  console.log("image", image);
 
   return (
     <form
@@ -425,26 +435,29 @@ export default function RecipeForm({ existingRecipe }: RecipeFormProps) {
           </Droppable>
         </DragDropContext>
       </section>
-      <div className={"ButtonBar"}>
-        <button className={"primary"}>Save</button>
-        <button
-          type={"button"}
-          className={"secondary"}
-          onClick={() => form.reset()}
-        >
-          Reset
-        </button>
-      </div>
-      <div className={"Feedback"}>
-        {mutation.isSuccess && (
-          <p className={"success"}>The recipe has been saved!</p>
-        )}
-        {mutation.isError && (
-          <p className={"error"}>
-            No no noThe recipe has been saved! {JSON.stringify(mutation.error)}
-          </p>
-        )}
-      </div>
+      <footer>
+        <div className={"ButtonBar"}>
+          <button className={"primary"}>Save</button>
+          <button
+            type={"button"}
+            className={"secondary"}
+            onClick={() => form.reset()}
+          >
+            Reset
+          </button>
+        </div>
+        <div className={"Feedback"}>
+          {mutation.isSuccess && (
+            <p className={"success"}>The recipe has been saved!</p>
+          )}
+          {mutation.isError && (
+            <p className={"error"}>
+              No no noThe recipe has been saved!{" "}
+              {JSON.stringify(mutation.error)}
+            </p>
+          )}
+        </div>
+      </footer>
     </form>
   );
 }

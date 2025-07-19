@@ -14,6 +14,14 @@ export const UpdateRecipePathParams = z.object({
 
 export type UpdateRecipePathParams = z.infer<typeof UpdateRecipePathParams>
 
+export const UpdateRecipeQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type UpdateRecipeQueryParams = z.infer<typeof UpdateRecipeQueryParams>
+
 /**
  * @description OK
  */

@@ -7,6 +7,14 @@ import { z } from 'zod/v4'
 
 import { MeDto } from './MeDto'
 
+export const GetMeQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type GetMeQueryParams = z.infer<typeof GetMeQueryParams>
+
 /**
  * @description OK
  */

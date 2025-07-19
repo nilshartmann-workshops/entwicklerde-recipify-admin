@@ -69,6 +69,10 @@
   }
 }
 
+.RootComponent {
+  @apply min-h-svh;
+}
+
 .App {
   @apply container mx-auto mt-8;
 }
@@ -97,7 +101,7 @@
 }
 
 .AdminLayout > header nav {
-  @apply container mx-auto;
+  @apply container mx-auto flex items-center justify-between;
 }
 
 .AdminLayout > header nav a {
@@ -128,8 +132,12 @@ form section {
   @apply flex flex-col space-y-4;
 }
 
+form footer {
+  @apply flex items-center gap-x-12 border-t border-dotted border-t-gray-300 pt-8;
+}
+
 form .ButtonBar {
-  @apply flex items-center gap-x-8 border-t border-dotted border-t-gray-300 pt-8;
+  @apply flex items-center gap-x-4;
 }
 
 .Dashboard a.Action,
@@ -141,6 +149,7 @@ form .ButtonBar button.primary:disabled {
   @apply cursor-default border-[#BDDFA4] bg-[#BDDFA4] hover:border-[#BDDFA4];
 }
 
+.AdminLayout nav button,
 form .ButtonBar button.secondary {
   @apply me-2 flex w-fit cursor-pointer items-center rounded border border-gray-200 bg-gray-200 px-2 py-1 text-lg hover:bg-gray-400;
 }
@@ -179,7 +188,15 @@ input {
 }
 
 .RecipeForm .Ingredients li {
-  @apply mb-8 grid w-full grid-cols-4 gap-x-8;
+  @apply mb-2 grid w-full grid-cols-4 gap-x-8;
+}
+
+.RecipeForm .Instructions li {
+  @apply py-4;
+}
+
+.RecipeForm .Instructions li.dragging {
+  @apply rounded-xl bg-gray-100 p-4;
 }
 
 .RecipeForm .Instructions li > div {
@@ -188,10 +205,6 @@ input {
 
 .RecipeForm .Instructions .DragHandle {
   @apply cursor-move text-xl;
-}
-
-.RecipeForm .Instructions li.dragging {
-  @apply -mb-8 rounded-xl bg-gray-100 p-8;
 }
 
 .RecipeForm .Instructions .Step {
@@ -395,6 +408,13 @@ form .error {
   @apply mt-8 flex items-center justify-center gap-x-8;
 }
 
+.LoginRoute {
+  @apply container mx-auto flex min-h-svh flex-row items-center justify-center;
+}
+
+.LoginForm {
+  @apply rounded-2xl border border-gray-300 p-8;
+}
 /*
   The default border color has changed to `currentcolor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still

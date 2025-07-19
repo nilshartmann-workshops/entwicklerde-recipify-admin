@@ -120,16 +120,18 @@ export default function UploadImageForm() {
           </div>
         )}
       </section>
-      <div className={"ButtonBar"}>
-        <button type={"submit"} className={"primary"}>
-          Upload
-        </button>
-      </div>
-      <div className={"Feedback"}>
-        {formState !== null && (
-          <p className={formState.type}>{formState.msg}</p>
-        )}
-      </div>
+      <footer>
+        <div className={"ButtonBar"}>
+          <button type={"submit"} className={"primary"}>
+            Upload
+          </button>
+        </div>
+        <div className={"Feedback"}>
+          {formState !== null && (
+            <p className={formState.type}>{formState.msg}</p>
+          )}
+        </div>
+      </footer>
     </form>
   );
 }

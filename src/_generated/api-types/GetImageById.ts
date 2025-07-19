@@ -13,6 +13,14 @@ export const GetImageByIdPathParams = z.object({
 
 export type GetImageByIdPathParams = z.infer<typeof GetImageByIdPathParams>
 
+export const GetImageByIdQueryParams = z
+  .object({
+    slowdown: z.coerce.number().int().optional(),
+  })
+  .optional()
+
+export type GetImageByIdQueryParams = z.infer<typeof GetImageByIdQueryParams>
+
 /**
  * @description OK
  */
