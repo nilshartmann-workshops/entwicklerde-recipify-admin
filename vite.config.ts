@@ -1,22 +1,18 @@
 /// <reference types="vitest/config" />
 
 import tailwindcss from "@tailwindcss/vite";
-import tanstackRouter from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
+const enableCompiler = false;
+
+const babelConfig = enableCompiler
+  ? { babel: { plugins: ["babel-plugin-react-compiler", {}] } }
+  : undefined;
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-    tanstackRouter({
-      // siehe Build-ausgabe:
-      //  ohne code-splitting: Warnung, großes Bundle
-      //  mit Code-Splitting: keine Warnung, viele kleine Bundles
-      // autoCodeSplitting: true,
-    }),
-    tailwindcss(),
-    react(),
-  ],
+  plugins: [tailwindcss(), react(babelConfig)],
   server: {
     proxy: {
       "/api": {
@@ -35,6 +31,20 @@ export default defineConfig({
         test: {
           name: "unit",
           include: ["src/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
+          environment: "jsdom",
+        },
+      },
+      {
+        extends: true,
+        test: {
+          name: "browser",
+          include: ["src/**/*.{browsertest,spec}.?(c|m)[jt]s?(x)"],
+          browser: {
+            enabled: true,
+            provider: "playwright",
+            // https://vitest.dev/guide/browser/playwright
+            instances: [{ browser: "chromium" }],
+          },
         },
       },
     ],

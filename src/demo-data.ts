@@ -1,3 +1,15 @@
+const _demo_images = [
+  { id: "1", title: "Spaghetti Napoli", src: "/assets/demo/napoli.png" },
+  { id: "2", title: "Penne all'Arrabbiata", src: "/assets/demo/penne.png" },
+  {
+    id: "3",
+    title: "Spaghetti aglio e olio",
+    src: "/assets/demo/aglio_e_olio.png",
+  },
+];
+
+export const getDemoImages = () => _demo_images;
+
 export function getAllCategories() {
   return [
     {

@@ -23,10 +23,14 @@ const importRules = enableImportRules
   : {};
 
 export default tseslint.config([
-  globalIgnores(["dist"]),
+  globalIgnores([
+    "dist",
+    "public/mockServiceWorker.js",
+    "vitest.browser.config.ts",
+  ]),
   {
     files: ["**/*.{ts,tsx}"],
-    ignores: ["dist", "public/mockServiceWorker.js", "src/routeTree.gen.ts"],
+    ignores: ["dist", "src/routeTree.gen.ts"],
     extends: [
       js.configs.recommended,
       tseslint.configs.recommended,
