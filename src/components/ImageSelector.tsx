@@ -1,6 +1,6 @@
-import type { ImageDto } from "../types.ts";
 import ImagePreview from "./ImagePreview.tsx";
 import { useDeferredValue, useId, useMemo, useState } from "react";
+import type { ImageDto } from "../_generated";
 
 type ImageSelectorProps = {
   allImages: ImageDto[];

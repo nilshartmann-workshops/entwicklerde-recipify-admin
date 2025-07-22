@@ -1,5 +1,7 @@
-import { type ChangeEvent, useState } from "react";
+import { type ChangeEvent, type FormEvent, useState } from "react";
 import Cropper, { type Area } from "react-easy-crop";
+import { getCroppedImg } from "./get-cropped-image.ts";
+import { useSaveImageMutation } from "../queries.ts";
 
 export default function ImageUploadForm() {
   const [imageTitle, setImageTitle] = useState("");
@@ -8,6 +10,7 @@ export default function ImageUploadForm() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1); // 0...3, 0.01
   const [croppedArea, setCroppedArea] = useState<Area>();
+  const mutation = useSaveImageMutation();
 
   const handleSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -20,8 +23,30 @@ export default function ImageUploadForm() {
     setImageSrc(url);
   };
 
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!imageSrc || !croppedArea) {
+      // hier wäre jetzt User-Feedback sinnvoll,
+      //  das sehen wir uns dann aber im Zusammenhang mit einem richtigen
+      //  Formular an
+      return;
+    }
+
+    const imageData = await getCroppedImg(imageSrc, croppedArea);
+
+    const formData = new FormData();
+    formData.set("title", imageTitle);
+    formData.set("file", imageData);
+
+    mutation.mutate(formData);
+
+    // Form Data!
+  };
+
   return (
-    <form className={"ImageUploadForm"}>
+    <form className={"ImageUploadForm"} onSubmit={handleSubmit}>
       <section>
         <h2>Upload Image</h2>
         <div className={"FormControl"}>
@@ -79,6 +104,19 @@ export default function ImageUploadForm() {
           </div>
         )}
       </section>
+      <footer>
+        <div className={"ButtonBar"}>
+          <button>Save</button>
+        </div>
+        <div className={"Feedback"}>
+          {mutation.isError && (
+            <p className={"error"}>
+              Could not save image: {mutation.error.message}
+            </p>
+          )}
+          {mutation.isSuccess && <p className={"success"}>Image saved!</p>}
+        </div>
+      </footer>
     </form>
   );
 }

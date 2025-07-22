@@ -158,6 +158,9 @@ form .ButtonBar {
 
 .App > button,
 .Dashboard a.Action,
+form .ButtonBar button.primary,
+form .ButtonBar button[type="submit"],
+form .ButtonBar button:not([type]),
 form .ButtonBar button.primary {
   @apply border-green bg-green me-2 flex w-fit cursor-pointer rounded border px-4 py-2 text-2xl text-white hover:border-[#4B792A] hover:bg-[#4B792A];
 }

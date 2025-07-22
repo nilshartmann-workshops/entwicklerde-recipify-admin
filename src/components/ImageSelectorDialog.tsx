@@ -7,9 +7,11 @@ import {
 import { useState } from "react";
 
 import { getDemoImages } from "../demo-data.ts";
-import type { ImageDto } from "../types.ts";
 import ImageUploadForm from "./ImageUploadForm.tsx";
 import ImageSelector from "./ImageSelector.tsx";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getImageListQueryOpts } from "../queries.ts";
+import type { ImageDto } from "../_generated";
 
 type ImageSelectorDialogProps = {
   // Kontrollierte Komponente!
@@ -26,7 +28,7 @@ export default function ImageSelectorDialog({
   selectedImage,
   onImageSelected,
 }: ImageSelectorDialogProps) {
-  const allImages = getDemoImages();
+  const { data: allImages } = useSuspenseQuery(getImageListQueryOpts());
   const [tab, setTab] = useState<"select" | "upload">("select");
 
   return (

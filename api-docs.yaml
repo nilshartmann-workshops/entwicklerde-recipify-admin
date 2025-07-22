@@ -1,0 +1,684 @@
+openapi: 3.0.1
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+  - description: Generated server url
+    url: 'http://localhost:8080'
+paths:
+  /api/admin/categories:
+    get:
+      operationId: getCategories
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryDto'
+      tags:
+        - Admin
+  /api/admin/feedback-dashboard-list:
+    get:
+      operationId: getFeedbackDashboardList
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageResponseAdminFeedbackDto'
+      tags:
+        - Admin
+  '/api/admin/feedback/{feedbackId}':
+    delete:
+      operationId: deleteFeedback
+      parameters:
+        - name: feedbackId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+      tags:
+        - Admin
+  '/api/admin/feedback/{feedbackId}/approval-status':
+    patch:
+      operationId: setFeedbackApprovalStatus
+      parameters:
+        - name: feedbackId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetFeedbackApprovalStatusRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/SetFeedbackApprovalStatusResponse'
+      tags:
+        - Admin
+  /api/admin/images:
+    get:
+      operationId: getAllImages
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageDto'
+      tags:
+        - Admin
+    post:
+      operationId: uploadImage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  description: Imagefile
+                  type: string
+                  format: binary
+                title:
+                  description: Title (used for alt attribute)
+                  type: string
+              required:
+                - file
+                - title
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ImageDto'
+      tags:
+        - Admin
+  '/api/admin/images/{imageId}':
+    get:
+      operationId: getImageById
+      parameters:
+        - name: imageId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/ImageDto'
+      tags:
+        - Admin
+  /api/admin/me:
+    get:
+      operationId: getMe
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/MeDto'
+      tags:
+        - Admin
+  /api/admin/meal-types:
+    get:
+      operationId: getMealTypes
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MealTypeDto'
+      tags:
+        - Admin
+  /api/admin/recipe-dashboard-list:
+    get:
+      operationId: getRecipeDashboardList
+      parameters:
+        - name: page
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/PageResponseAdminRecipeDto'
+      tags:
+        - Admin
+  /api/admin/recipes:
+    post:
+      operationId: createRecipe
+      parameters:
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminRecipeDto'
+      tags:
+        - Admin
+  '/api/admin/recipes/{recipeId}':
+    get:
+      operationId: getAdminRecipe
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminRecipeDto'
+      tags:
+        - Admin
+    put:
+      operationId: updateRecipe
+      parameters:
+        - name: recipeId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: slowdown
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipeRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AdminRecipeDto'
+      tags:
+        - Admin
+  /api/login:
+    post:
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+      tags:
+        - Login
+  /api/logout:
+    post:
+      operationId: logout
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+      tags:
+        - Login
+components:
+  schemas:
+    AdminFeedbackDto:
+      type: object
+      properties:
+        approvalStatus:
+          $ref: '#/components/schemas/ApprovalStatus'
+        comment:
+          type: string
+        commenter:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        id:
+          type: string
+        rating:
+          type: integer
+          format: int32
+        recipeId:
+          type: string
+        recipeTitle:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - approvalStatus
+        - comment
+        - commenter
+        - createdAt
+        - id
+        - rating
+        - recipeId
+        - recipeTitle
+        - updatedAt
+    AdminRecipeDto:
+      type: object
+      properties:
+        approvedFeedbackCount:
+          type: integer
+          format: int64
+        categoryIds:
+          type: array
+          items:
+            type: string
+        cookTime:
+          type: integer
+          format: int32
+        createdAt:
+          type: string
+          format: date-time
+        headline:
+          type: string
+        id:
+          type: string
+        image:
+          $ref: '#/components/schemas/ImageDto'
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientDto'
+        instructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstructionDto'
+        likes:
+          type: integer
+          format: int32
+        mealTypeId:
+          type: string
+        pendingFeedbackCount:
+          type: integer
+          format: int64
+        preparationTime:
+          type: integer
+          format: int32
+        rejectedFeedbackCount:
+          type: integer
+          format: int64
+        title:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - approvedFeedbackCount
+        - categoryIds
+        - createdAt
+        - headline
+        - id
+        - image
+        - ingredients
+        - instructions
+        - likes
+        - mealTypeId
+        - pendingFeedbackCount
+        - rejectedFeedbackCount
+        - title
+        - updatedAt
+    ApprovalStatus:
+      type: string
+      enum:
+        - PENDING
+        - APPROVED
+        - REJECTED
+    CategoryDto:
+      type: object
+      properties:
+        description:
+          type: string
+        icon:
+          type: string
+        id:
+          type: string
+        title:
+          type: string
+        type:
+          type: string
+      required:
+        - description
+        - icon
+        - id
+        - title
+        - type
+    ImageDto:
+      type: object
+      properties:
+        id:
+          type: string
+        src:
+          type: string
+        title:
+          type: string
+      required:
+        - id
+        - src
+        - title
+    IngredientDto:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        name:
+          type: string
+        unit:
+          type: string
+      required:
+        - amount
+        - name
+        - unit
+    IngredientRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+        name:
+          type: string
+        unit:
+          type: string
+      required:
+        - amount
+        - name
+        - unit
+    InstructionDto:
+      type: object
+      properties:
+        description:
+          type: string
+      required:
+        - description
+    InstructionRequest:
+      type: object
+      properties:
+        description:
+          type: string
+      required:
+        - description
+    LoginRequest:
+      type: object
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+      required:
+        - password
+        - username
+    LoginResponse:
+      type: object
+      properties:
+        message:
+          type: string
+    MeDto:
+      type: object
+      properties:
+        fullname:
+          type: string
+      required:
+        - fullname
+    MealTypeDto:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    NewApprovalStatus:
+      type: string
+      enum:
+        - APPROVED
+        - REJECTED
+    PageResponseAdminFeedbackDto:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/AdminFeedbackDto'
+          type: array
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+        meta:
+          type: string
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+      required:
+        - content
+        - hasNext
+        - hasPrevious
+        - pageNumber
+        - totalPages
+    PageResponseAdminRecipeDto:
+      type: object
+      properties:
+        content:
+          items:
+            $ref: '#/components/schemas/AdminRecipeDto'
+          type: array
+        hasNext:
+          type: boolean
+        hasPrevious:
+          type: boolean
+        meta:
+          type: string
+        pageNumber:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+      required:
+        - content
+        - hasNext
+        - hasPrevious
+        - pageNumber
+        - totalPages
+    RecipeRequest:
+      type: object
+      properties:
+        categoryIds:
+          type: array
+          items:
+            type: string
+        cookTime:
+          type: integer
+          format: int32
+        headline:
+          type: string
+        imageId:
+          type: string
+        ingredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/IngredientRequest'
+        instructions:
+          type: array
+          items:
+            $ref: '#/components/schemas/InstructionRequest'
+        mealTypeId:
+          type: string
+        preparationTime:
+          type: integer
+          format: int32
+        title:
+          type: string
+      required:
+        - categoryIds
+        - headline
+        - imageId
+        - ingredients
+        - instructions
+        - mealTypeId
+        - title
+    SetFeedbackApprovalStatusRequest:
+      type: object
+      properties:
+        newApprovalStatus:
+          $ref: '#/components/schemas/NewApprovalStatus'
+      required:
+        - newApprovalStatus
+    SetFeedbackApprovalStatusResponse:
+      type: object
+      properties:
+        approvalStatus:
+          $ref: '#/components/schemas/ApprovalStatus'
+      required:
+        - approvalStatus
+tags:
+  - description: Admin Endpoints
+    name: Admin
+  - description: Login/Logout Endpoints
+    name: Login
