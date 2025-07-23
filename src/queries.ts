@@ -58,7 +58,7 @@ export const getRecipeDashboardListQueryOpts = (page = 0) =>
     staleTime: 5_000,
     async queryFn() {
       const response = await ky
-        .get("api/admin/recipe-dashboard-list?page=" + page + "&slowdown=0")
+        .get("api/admin/recipe-dashboard-list?page=" + page + "&slowdown=2000")
         .json();
       return GetRecipeDashboardListQueryResponse.parse(response);
     },
@@ -127,7 +127,9 @@ export const getRecipeDetailsQueryOpts = (recipeId: string) =>
   queryOptions({
     queryKey: ["recipes", "details", recipeId],
     async queryFn() {
-      const response = await ky.get("/api/admin/recipes/" + recipeId).json();
+      const response = await ky
+        .get("/api/admin/recipes/" + recipeId + "?slowdown=2000")
+        .json();
       return GetAdminRecipeQueryResponse.parse(response);
     },
   });

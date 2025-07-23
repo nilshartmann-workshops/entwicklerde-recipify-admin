@@ -4,7 +4,14 @@ import { getRecipeDetailsQueryOpts } from "../../queries.ts";
 import RecipeForm from "../../components/RecipeForm.tsx";
 
 export const Route = createFileRoute("/admin/$recipeId")({
+  pendingComponent: () => <h2 className={"Loading"}>Loading Recipe</h2>,
   component: RouteComponent,
+  async loader({ context, params }) {
+    console.log("Loading Recipe", params.recipeId);
+    context.queryClient.ensureQueryData(
+      getRecipeDetailsQueryOpts(params.recipeId),
+    );
+  },
 });
 
 function RouteComponent() {

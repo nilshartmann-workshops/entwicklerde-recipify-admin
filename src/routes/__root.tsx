@@ -3,9 +3,15 @@ import {
   Outlet,
   createRootRoute,
   retainSearchParams,
+  createRootRouteWithContext,
 } from "@tanstack/react-router";
+import type { QueryClient } from "@tanstack/react-query";
 
-export const Route = createRootRoute({
+type RouterContext = {
+  queryClient: QueryClient;
+};
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   search: {
     middlewares: [retainSearchParams(true)],

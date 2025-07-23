@@ -4,6 +4,10 @@ import RecipesDashboard from "../../components/RecipesDashboard.tsx";
 import FeedbackDashboard from "../../components/FeedbackDashboard.tsx";
 import { z } from "zod/v4";
 import { zodValidator } from "@tanstack/zod-adapter";
+import {
+  getRecipeDashboardListQueryOpts,
+  getRecipeDetailsQueryOpts,
+} from "../../queries.ts";
 
 const SearchParams = z.object({
   recipesDashboardPage: z.number().optional(),
@@ -13,6 +17,29 @@ const SearchParams = z.object({
 export const Route = createFileRoute("/admin/")({
   component: Dashboard,
   validateSearch: zodValidator(SearchParams),
+  loaderDeps(opts) {
+    return {
+      recipesDashboardPage: opts.search.recipesDashboardPage,
+      selectedRecipeId: opts.search.selectedRecipeId,
+    };
+  },
+  async loader({ context, deps }) {
+    // woher  kommt meine selectedRecipeId
+    // woher kommt recipesDashboardPage
+
+    if (deps.selectedRecipeId !== undefined) {
+      context.queryClient.ensureQueryData(
+        getRecipeDetailsQueryOpts(deps.selectedRecipeId),
+      );
+    }
+
+    if (deps.recipesDashboardPage !== undefined) {
+      context.queryClient.ensureQueryData(
+        getRecipeDashboardListQueryOpts(deps.recipesDashboardPage),
+      );
+    }
+    //
+  },
 });
 
 function Dashboard() {

@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 
 import {
   getRecipeDashboardListQueryOpts,
@@ -50,6 +50,7 @@ export default function RecipesDashboard() {
                 <td>{formatDateTime(r.updatedAt)}</td>
                 <td>
                   <Link
+                    preload={"intent"}
                     to={"/admin/$recipeId"}
                     params={{
                       recipeId: r.id,
@@ -78,7 +79,11 @@ export default function RecipesDashboard() {
           </tbody>
         </table>
         {selectedRecipeId !== undefined && (
-          <RecipeDetails recipeId={selectedRecipeId} />
+          <Suspense
+            fallback={<h2 className={"Loading"}>Recipe is loading...</h2>}
+          >
+            <RecipeDetails recipeId={selectedRecipeId} />
+          </Suspense>
         )}
       </section>
       <nav>

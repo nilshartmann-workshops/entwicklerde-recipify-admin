@@ -13,7 +13,13 @@ const babelConfig = enableCompiler
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tailwindcss(), tanstackRouter(), react(babelConfig)],
+  plugins: [
+    tailwindcss(),
+    tanstackRouter({
+      autoCodeSplitting: true,
+    }),
+    react(babelConfig),
+  ],
   server: {
     proxy: {
       "/api": {
