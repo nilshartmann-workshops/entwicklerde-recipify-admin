@@ -5,9 +5,13 @@ import {
 } from "@tanstack/react-query";
 import _base_ky from "ky";
 import {
+  AdminRecipeDto,
+  type CreateRecipeMutationRequest,
   GetAdminRecipeQueryResponse,
   GetAllImagesQueryResponse,
+  GetCategoriesQueryResponse,
   GetFeedbackDashboardListQueryResponse,
+  GetMealTypesQueryResponse,
   GetRecipeDashboardListQueryResponse,
   type NewApprovalStatus,
   SetFeedbackApprovalStatusMutationResponse,
@@ -127,3 +131,39 @@ export const getRecipeDetailsQueryOpts = (recipeId: string) =>
       return GetAdminRecipeQueryResponse.parse(response);
     },
   });
+
+export const getMealtypesQueryOpts = () =>
+  queryOptions({
+    queryKey: ["admin", "mealtypes"],
+    async queryFn() {
+      const response = await ky.get("/api/admin/meal-types").json();
+      return GetMealTypesQueryResponse.parse(response);
+    },
+    staleTime: 10_000,
+  });
+
+export const getCategoriesQueryOpts = () =>
+  queryOptions({
+    queryKey: ["admin", "categories"],
+    // lange Staletime, weil Daten sich nicht ändern
+    staleTime: 10_000,
+    async queryFn() {
+      // lange Staletime, weil Daten sich nicht ändern
+      const response = await ky.get("/api/admin/categories").json();
+      return GetCategoriesQueryResponse.parse(response);
+    },
+  });
+
+export const useSaveRecipeMutation = () => {
+  const mutation = useMutation({
+    async mutationFn(recipe: CreateRecipeMutationRequest) {
+      const response = await ky
+        .post("/api/admin/recipes?slowdown=10000", {
+          json: recipe,
+        })
+        .json();
+      return AdminRecipeDto.parse(response);
+    },
+  });
+  return mutation;
+};
