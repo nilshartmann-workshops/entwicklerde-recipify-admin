@@ -3,6 +3,7 @@
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import tanstackRouter from "@tanstack/router-plugin/vite";
 
 const enableCompiler = false;
 
@@ -12,7 +13,7 @@ const babelConfig = enableCompiler
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [tailwindcss(), react(babelConfig)],
+  plugins: [tailwindcss(), tanstackRouter(), react(babelConfig)],
   server: {
     proxy: {
       "/api": {

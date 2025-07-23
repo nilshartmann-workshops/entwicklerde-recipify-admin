@@ -58,7 +58,7 @@ export const getRecipeDashboardListQueryOpts = (page = 0) =>
     staleTime: 5_000,
     async queryFn() {
       const response = await ky
-        .get("api/admin/recipe-dashboard-list?page=" + page + "&slowdown=1500")
+        .get("api/admin/recipe-dashboard-list?page=" + page + "&slowdown=0")
         .json();
       return GetRecipeDashboardListQueryResponse.parse(response);
     },
@@ -154,14 +154,24 @@ export const getCategoriesQueryOpts = () =>
     },
   });
 
-export const useSaveRecipeMutation = () => {
+export const useSaveRecipeMutation = (recipeId?: string) => {
   const mutation = useMutation({
     async mutationFn(recipe: CreateRecipeMutationRequest) {
-      const response = await ky
-        .post("/api/admin/recipes?slowdown=10000", {
-          json: recipe,
-        })
-        .json();
+      let response;
+
+      if (recipeId === undefined) {
+        response = await ky
+          .post("/api/admin/recipes", {
+            json: recipe,
+          })
+          .json();
+      } else {
+        response = await ky
+          .put("/api/admin/recipes/" + recipeId, {
+            json: recipe,
+          })
+          .json();
+      }
       return AdminRecipeDto.parse(response);
     },
   });

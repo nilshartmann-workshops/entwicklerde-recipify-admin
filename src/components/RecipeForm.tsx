@@ -8,7 +8,7 @@ import {
   useSaveRecipeMutation,
 } from "../queries.ts";
 import { type ReactNode, useState } from "react";
-import { ImageDto } from "../_generated";
+import { type AdminRecipeDto, ImageDto } from "../_generated";
 import ImageSelectorDialog from "./ImageSelectorDialog.tsx";
 import CategorySelector from "./CategorySelector.tsx";
 import {
@@ -54,24 +54,30 @@ const RecipeFormSchema = z.object({
 
 type RecipeFormSchema = z.infer<typeof RecipeFormSchema>;
 
-export default function RecipeForm() {
+type RecipeFormProps = {
+  existingRecipe?: AdminRecipeDto;
+};
+
+export default function RecipeForm({ existingRecipe }: RecipeFormProps) {
   const [{ data: mealTypes }, { data: categories }] = useSuspenseQueries({
     queries: [getMealtypesQueryOpts(), getCategoriesQueryOpts()],
   });
 
   const form = useForm({
     resolver: zodResolver(RecipeFormSchema),
-    defaultValues: {
-      categoryIds: [],
-      ingredients: [
-        {
-          amount: 0,
-          unit: "",
-          name: "",
+    defaultValues: existingRecipe
+      ? { ...existingRecipe }
+      : {
+          categoryIds: [],
+          ingredients: [
+            {
+              amount: 0,
+              unit: "",
+              name: "",
+            },
+          ],
+          instructions: [{ description: "" }],
         },
-      ],
-      instructions: [{ description: "" }],
-    },
   });
 
   const mutation = useSaveRecipeMutation();

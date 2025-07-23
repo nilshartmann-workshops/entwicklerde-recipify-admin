@@ -6,16 +6,26 @@ import {
   getRecipeDetailsQueryOpts,
 } from "../queries.ts";
 import { formatDateTime } from "./date-utils.ts";
+import { getRouteApi, Link } from "@tanstack/react-router";
+
+const Route = getRouteApi("/admin/");
 
 export default function RecipesDashboard() {
-  const [selectedRecipeId, setSelectedRecipeId] = useState<string>();
+  // const [selectedRecipeId, setSelectedRecipeId] = useState<string>();
 
-  const [page, setPage] = useState(0);
+  const page = Route.useSearch({
+    select: (params) => params.recipesDashboardPage || 0,
+  });
+
+  const selectedRecipeId = Route.useSearch({
+    select: (params) => params.selectedRecipeId,
+  });
+
+  // const [page, setPage] = useState(0);
+
   const { data, isFetching } = useSuspenseQuery(
     getRecipeDashboardListQueryOpts(page),
   );
-
-  const { pageNumber, hasNext, hasPrevious } = data;
 
   return (
     <div
@@ -38,18 +48,30 @@ export default function RecipesDashboard() {
               <tr key={r.id}>
                 <td>{r.id}</td>
                 <td>{formatDateTime(r.updatedAt)}</td>
-                <td>{r.title}</td>
+                <td>
+                  <Link
+                    to={"/admin/$recipeId"}
+                    params={{
+                      recipeId: r.id,
+                    }}
+                  >
+                    {r.title}
+                  </Link>
+                </td>
                 <td className={"right"}>
                   {r.approvedFeedbackCount} /{" "}
                   {r.pendingFeedbackCount + r.rejectedFeedbackCount}
                 </td>
                 <td className={"Actions"}>
-                  <button
-                    type={"button"}
-                    onClick={() => setSelectedRecipeId(r.id)}
+                  <Link
+                    to={"/admin"}
+                    search={(current) => ({
+                      ...current,
+                      selectedRecipeId: r.id,
+                    })}
                   >
                     🔎 Details
-                  </button>
+                  </Link>
                 </td>
               </tr>
             ))}
@@ -60,21 +82,23 @@ export default function RecipesDashboard() {
         )}
       </section>
       <nav>
-        <button
-          type="button"
-          disabled={!hasPrevious}
-          onClick={() => setPage(pageNumber - 1)}
+        <Link
+          to={"/admin"}
+          search={{
+            recipesDashboardPage: page - 1,
+          }}
         >
           Previous
-        </button>
-        Page: {pageNumber}
-        <button
-          type="button"
-          disabled={!hasNext}
-          onClick={() => setPage(pageNumber + 1)}
+        </Link>
+        Page: {page}
+        <Link
+          to={"/admin"}
+          search={{
+            recipesDashboardPage: page + 1,
+          }}
         >
           Next
-        </button>
+        </Link>
       </nav>
     </div>
   );

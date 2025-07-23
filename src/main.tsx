@@ -7,11 +7,12 @@ import { createQueryClient } from "./create-query-client.tsx";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
-const queryClient = createQueryClient();
+import { queryClient, recipifyRouter } from "./create-router.tsx";
+import { RouterProvider } from "@tanstack/react-router";
 
 createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
-    <App />
+    <RouterProvider router={recipifyRouter} />
     <ReactQueryDevtools />
   </QueryClientProvider>,
 );
