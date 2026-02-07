@@ -37,7 +37,7 @@ export const useSaveImageMutation = () => {
   return useMutation({
     async mutationFn(formData: FormData) {
       const response = ky
-        .post("api/admin/images", {
+        .post("/api/admin/images", {
           body: formData,
         })
         .json();
